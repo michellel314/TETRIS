@@ -5,5 +5,8 @@ public class ReyvinsGirlyPopHighHeels extends Equipment{
         this.skipChance = skipChance;
     }
 
+    public int getSkipChance(){
+        return skipChance;
+    }
 
 }

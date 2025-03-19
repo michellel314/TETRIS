@@ -4,4 +4,8 @@ public class ReyvinsPulsingRewindWatch extends Equipment{
         super(name, score, uses);
         this.extraTurn = extraTurn;
     }
+
+    public int getExtraTurn() {
+        return extraTurn;
+    }
 }

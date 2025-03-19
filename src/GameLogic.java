@@ -11,8 +11,8 @@ public class GameLogic {
     }
 
     public void start(){
-        createPlayer();
         setUpPanel();
+        createPlayer();
     }
 
     private void createPlayer(){

@@ -4,4 +4,8 @@ public class ReyvinsQuirkyStunGun extends Equipment{
         super(name, score, uses);
         this.pauseDuration = pauseDuration;
     }
+
+    public int getPauseDuration() {
+        return pauseDuration;
+    }
 }

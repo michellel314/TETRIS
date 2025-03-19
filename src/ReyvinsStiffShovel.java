@@ -4,4 +4,8 @@ public class ReyvinsStiffShovel extends Equipment{
         super(name, score, uses);
         this.numberOfRows = numberOfRows;
     }
+
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
 }
