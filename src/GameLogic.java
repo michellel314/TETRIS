@@ -29,6 +29,9 @@ public class GameLogic {
             }
             System.out.println();
         }
+        for(int r = 0; r < 1; r++){
+            if()
+        }
 
 
     }
