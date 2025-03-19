@@ -22,7 +22,15 @@ public class GameLogic {
     }
 
     private void setUpPanel(){
-        panel = new Block[]
+        panel = new Block[9][17];
+        for(int r = 1; r < panel.length; r++){
+            for(int c = 1; c < panel[0].length; c++){
+                System.out.print("□");
+            }
+            System.out.println();
+        }
+
+
     }
 
 
