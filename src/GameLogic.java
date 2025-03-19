@@ -10,6 +10,11 @@ public class GameLogic {
         createPlayer();
     }
 
+    public void start(){
+        createPlayer();
+        setUpPanel();
+    }
+
     private void createPlayer(){
         System.out.print("Enter your name: ");
         String name = scan.nextLine();
