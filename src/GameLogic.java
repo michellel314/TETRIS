@@ -1,9 +1,12 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class GameLogic {
     private Block[][] panel;
     private Player player;
     private Scanner scan;
+    private int x;
+    private int y;
 
     public GameLogic(){
         scan = new Scanner(System.in);
@@ -11,7 +14,7 @@ public class GameLogic {
     }
 
     public void start(){
-        setUpPanel();
+        seterUpPanel();
         createPlayer();
     }
 
@@ -29,14 +32,16 @@ public class GameLogic {
             }
             System.out.println();
         }
-        for(int r = 0; r < 1; r++){
-            if()
+//        for(int r = 0; r < 1; r++){
+//            if()
         }
 
+    private void seterUpPanel() {
+        System.out.print("How big do you want the game? (X): ");
+        x = scan.nextInt();
+        System.out.print("How big do you want the game? (Y): ");
+        y = scan.nextInt();
 
     }
-
-
-
 
 }

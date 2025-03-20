@@ -10,12 +10,13 @@ public class OutputWindow {
     private StyledDocument doc;
     private Style style;
     private JTextPane textPane;
+    private String name;
 
-    public OutputWindow() {
-        JFrame frame = new JFrame("Test");
+    public OutputWindow(String name) {
+        JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // causes program to end when window is X'd out
-        frame.setSize(500, 400); // window size
-        frame.setLocation(300, 50); // where on screen window appears
+        frame.setSize(1000, 1000); // window size
+        frame.setLocation(300, 30); // where on screen window appears
         textPane = new JTextPane(); // panel that can handle custom text
         textPane.setEditable(false); // prevents user from typing into window
         doc = textPane.getStyledDocument(); // call getter method for panel's style doc
