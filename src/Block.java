@@ -1,2 +1,2 @@
-public class Block{
+public class Block {
 }
