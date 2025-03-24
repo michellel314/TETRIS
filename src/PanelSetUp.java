@@ -25,6 +25,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private JTextPane textPane;
     private String name;
     private BufferedImage grid;
+    private BufferedImage title;
 
     public PanelSetUp(){
         textPane = new JTextPane(); // panel that can handle custom text
@@ -37,6 +38,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
     public void makeFrame() {
         try {
+            title = ImageIO.read(new File("Visuals\\title.png"));
             grid = ImageIO.read(new File("Visuals\\grid.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -45,13 +47,11 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
     @Override
     public void paintComponent(Graphics g) {
+        makeFrame();
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        rect1.setLocation(300, 300);
-        g2d.setStroke(new BasicStroke(3));
-        g2d.setColor(Color.BLACK);
-        g2d.fill(rect1);
+
 
     }
 
