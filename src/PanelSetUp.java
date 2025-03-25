@@ -50,8 +50,6 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         makeFrame();
         super.paintComponent(g);
 
-
-
         g.drawImage(grid, 200, 20, null);
         g.drawImage(title, 200 , 200, null);
     }
