@@ -17,6 +17,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.Timer;
 
 public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
@@ -27,7 +28,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private BufferedImage grid;
     private BufferedImage title;
 
-    public PanelSetUp(){
+    public PanelSetUp(Timer timer){
         textPane = new JTextPane(); // panel that can handle custom text
         textPane.setEditable(false); // prevents user from typing into window
         doc = textPane.getStyledDocument(); // call getter method for panel's style doc

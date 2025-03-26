@@ -1,5 +1,6 @@
 public class GameRunner {
     public static void main(String[] args) {
-        OutputWindow game = new OutputWindow("Game");
+        GameLogic game = new GameLogic();
+        game.start();
     }
 }
