@@ -4,25 +4,34 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.Timer;
-import java.util.TimerTask;
 
 
 public class GameLogic implements ActionListener {
-    private Block[][] panel;
     private Player player;
     private Scanner scan;
     OutputWindow game;
     Timer timer;
-
+    private int time = 0;
+    PanelSetUp panel;
 
     public GameLogic(){
         scan = new Scanner(System.in);
-        timer = new Timer();
+        panel = new PanelSetUp(this);
+        timer = new Timer(1000, this);
+        timer.start();
     }
 
     public void start(){
         createPlayer();
-        game = new OutputWindow("Teris", this.timer);
+        game = new OutputWindow("Teris", this, this.panel);
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void resetTimer() {
+        timer.restart();
     }
 
     private void createPlayer(){
@@ -34,6 +43,7 @@ public class GameLogic implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        time++;
+        panel.updateTimer();
     }
 }

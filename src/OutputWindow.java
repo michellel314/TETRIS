@@ -10,13 +10,12 @@ public class OutputWindow {
 
     private Timer timer;
 
-    public OutputWindow(String name, Timer timer) {
+    public OutputWindow(String name, GameLogic logic, PanelSetUp panel) {
         this.timer = timer;
         JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // causes program to end when window is X'd out
         frame.setSize(1000, 1000); // window size
         frame.setLocation(300, 30); // where on screen window appears
-        PanelSetUp panel = new PanelSetUp(this.timer);
         frame.add(panel);
         frame.setVisible(true); // display the frame on screen
     }

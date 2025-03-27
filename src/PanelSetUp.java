@@ -27,14 +27,16 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private String name;
     private BufferedImage grid;
     private BufferedImage title;
+    private GameLogic logic;
 
-    public PanelSetUp(Timer timer){
+    public PanelSetUp(GameLogic logic){
         textPane = new JTextPane(); // panel that can handle custom text
         textPane.setEditable(false); // prevents user from typing into window
         doc = textPane.getStyledDocument(); // call getter method for panel's style doc
         style = doc.addStyle("my style", null); // add a custom style to the doc
         StyleConstants.setFontSize(style, 25); // apply font size to custom style
         add(textPane); // add the panel to the frame
+        this.logic = logic;
     }
 
     public void makeFrame() {
@@ -46,11 +48,16 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         }
     }
 
+    public void updateTimer(){
+        repaint();
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         makeFrame();
         super.paintComponent(g);
 
+        g.drawString(String.valueOf(logic.getTime()), 10, 10);
         g.drawImage(grid, 200, 20, null);
         g.drawImage(title, 200 , 200, null);
     }
