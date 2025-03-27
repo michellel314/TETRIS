@@ -1,13 +1,22 @@
 import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
-
 public class Music {
     private Clip clip;
-    public Music(String audioFilePath) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(audioFilePath)));
-        clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
+    public static void playSound (String filePath)  {
+        File audioFile = new File(filePath);
+        try (AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile)) {
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+            // Keep the program running until the sound finishes
+            while (clip.isRunning()) {
+                Thread.sleep(10);
+            }
+            clip.close();
+        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void play() {
