@@ -13,9 +13,11 @@ public class GameLogic implements ActionListener {
     Timer timer;
     private int time = 0;
     PanelSetUp panel;
+    Shop shop;
 
     public GameLogic(){
         scan = new Scanner(System.in);
+        shop = new Shop();
         panel = new PanelSetUp(this);
         timer = new Timer(1000, this);
         timer.start();

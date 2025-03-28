@@ -1,11 +1,11 @@
 public class ReyvinsPulsingRewindWatch extends Equipment{
-    private int extraTurn;
-    public ReyvinsPulsingRewindWatch(String name, int score, int uses, int extraTurn){
+    private int rewind;
+    public ReyvinsPulsingRewindWatch(String name, int score, int uses, int rewind){
         super(name, score, uses);
-        this.extraTurn = extraTurn;
+        this.rewind = rewind;
     }
 
-    public int getExtraTurn() {
-        return extraTurn;
+    public int getRewind() {
+        return rewind;
     }
 }
