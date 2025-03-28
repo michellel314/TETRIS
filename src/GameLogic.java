@@ -6,6 +6,7 @@ import java.util.Scanner;
 import javax.swing.Timer;
 
 
+
 public class GameLogic implements ActionListener {
     private Player player;
     private Scanner scan;
@@ -13,6 +14,7 @@ public class GameLogic implements ActionListener {
     Timer timer;
     private int time = 0;
     PanelSetUp panel;
+    Music music = new Music();
 
     public GameLogic(){
         scan = new Scanner(System.in);
@@ -24,6 +26,10 @@ public class GameLogic implements ActionListener {
     public void start(){
         createPlayer();
         game = new OutputWindow("Teris", this, this.panel);
+        music.setFile(0);
+        music.play();
+        music.loop();
+
     }
 
     public int getTime() {

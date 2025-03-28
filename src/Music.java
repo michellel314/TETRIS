@@ -1,28 +1,36 @@
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+
 public class Music {
-    private Clip clip;
-    public static void playSound (String filePath)  {
-        File audioFile = new File(filePath);
-        try (AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile)) {
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-            // Keep the program running until the sound finishes
-            while (clip.isRunning()) {
-                Thread.sleep(10);
-            }
-            clip.close();
-        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException | InterruptedException e) {
-            e.printStackTrace();
+     Clip clip;
+    URL soundURL[] = new URL[10];
+    public Music(){
+
+        soundURL[0] = getClass().getResource("/sounds/BARNEY.wav");
+    }
+
+
+    public  void setFile (int i)  {
+        try{
+            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
+            clip = AudioSystem.getClip();
+            clip.open(ais);
+
+
+        } catch (Exception e){
         }
+
     }
 
     public void play() {
         clip.start();
     }
 
+    public void loop(){
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
     public void stop() {
         clip.stop();
     }

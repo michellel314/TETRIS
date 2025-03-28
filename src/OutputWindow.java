@@ -8,6 +8,7 @@ import javax.swing.text.StyledDocument;
 
 public class OutputWindow {
 
+
     private Timer timer;
 
     public OutputWindow(String name, GameLogic logic, PanelSetUp panel) {

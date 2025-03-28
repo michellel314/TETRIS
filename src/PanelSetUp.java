@@ -28,7 +28,13 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private BufferedImage grid;
     private BufferedImage title;
     private GameLogic logic;
+    Music music = new Music();
+    final int scale = 3;
 
+    public void setUpGame(){
+        music.setFile(0);
+        music.play();
+    }
     public PanelSetUp(GameLogic logic){
         textPane = new JTextPane(); // panel that can handle custom text
         textPane.setEditable(false); // prevents user from typing into window
@@ -42,13 +48,14 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     public void makeFrame() {
         try {
             grid = ImageIO.read(new File("Visuals\\Outline (1).png"));
-            title = ImageIO.read(new File("Visuals\\Title.png"));
+            title = ImageIO.read(new File("Visuals\\title  (1).png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void updateTimer(){
+
         repaint();
     }
 
@@ -59,7 +66,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
         g.drawString(String.valueOf(logic.getTime()), 10, 10);
         g.drawImage(grid, 200, 20, null);
-        g.drawImage(title, 200 , 200, null);
+        g.drawImage(title, 700 , 5, null);
     }
 
     @Override
