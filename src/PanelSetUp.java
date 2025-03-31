@@ -1,13 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.imageio.ImageIO;
+import javax.swing.text.Style;
+import javax.swing.text.StyledDocument;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.Image;
 import java.io.File;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.Timer;
+
 public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private int rectX;
     private int rectY;
@@ -25,6 +35,31 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private String message;
     private Color rectColor;
     private Block block;
+
+    private StyledDocument doc;
+    private Style style;
+    private JTextPane textPane;
+    private String name;
+    private BufferedImage grid;
+    private BufferedImage title;
+    private GameLogic logic;
+    Music music = new Music();
+    final int scale = 3;
+
+    public void setUpGame(){
+        music.setFile(0);
+        music.play();
+    }
+    public PanelSetUp(GameLogic logic){
+        textPane = new JTextPane(); // panel that can handle custom text
+        textPane.setEditable(false); // prevents user from typing into window
+        doc = textPane.getStyledDocument(); // call getter method for panel's style doc
+        style = doc.addStyle("my style", null); // add a custom style to the doc
+        StyleConstants.setFontSize(style, 25); // apply font size to custom style
+        add(textPane); // add the panel to the frame
+        this.logic = logic;
+    }
+
     public void makeFrame() {
 
         OutputWindow game = new OutputWindow("Teris");
@@ -79,6 +114,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
     @Override
     public void paintComponent(Graphics g) {
+        makeFrame();
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
@@ -87,6 +123,9 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         g2d.setColor(Color.BLACK);
         g2d.fill(rect1);
 
+        g.drawString(String.valueOf(logic.getTime()), 10, 10);
+        g.drawImage(grid, 200, 20, null);
+        g.drawImage(title, 700 , 5, null);
     }
 
     @Override
