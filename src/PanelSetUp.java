@@ -1,35 +1,40 @@
-import javax.swing.JPanel;
-import java.awt.Rectangle;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.BasicStroke;
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.Point;
-
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.awt.Image;
+import java.io.File;
 public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private int rectX;
     private int rectY;
     private Rectangle rect1;
-
+    private Timer timer;
+    private int blockFallSpeed = 500;
+    private int wave = 1;
+    private int waveIncreaseInterval = 5;
     // add second rectangle and its x and y location as instance variables
     private int rect2X;
     private int rect2Y;
     private Rectangle rect2;
-
+    private Image[] blockImages = new Image[18];
+    private Image blockImage;
     private String message;
     private Color rectColor;
-
+    private Block block;
     public void makeFrame() {
 
         OutputWindow game = new OutputWindow("Teris");
 
         rect1 = new Rectangle(100, 100);
+        rectX = 300;
+        rectY = 0;
 
+        timer = new Timer(blockFallSpeed, e -> moveBlockDown());
+        timer.start();
         // initialize second rectangle and its x and y location
         rect2X = 230;
         rect2Y = 5;
@@ -44,16 +49,43 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         requestFocusInWindow();
     }
 
+    public void loadBlockImages(){
+        try{
+            blockImages[0] = ImageIO.read(new File("Visuals/BlueBlock(1).png"));
+            blockImages[1] = ImageIO.read(new File("Visuals/BlueBlock(2).png"));
+            blockImages[2] = ImageIO.read(new File("Visuals/BlueBlock(3).png"));
+            blockImages[3] = ImageIO.read(new File("Visuals/BlueBlock(4).png"));
+            blockImages[4] = ImageIO.read(new File("Visuals/CyanBlock(1).png"));
+            blockImages[5] = ImageIO.read(new File("Visuals/CyanBlock(2).png"));
+            blockImages[6] = ImageIO.read(new File("Visuals/GreenBlock(1).png"));
+            blockImages[7] = ImageIO.read(new File("Visuals/GreenBlock(2).png"));
+            blockImages[8] = ImageIO.read(new File("Visuals/OrangeBlock(1).png"));
+            blockImages[9] = ImageIO.read(new File("Visuals/OrangeBlock(2).png"));
+            blockImages[10] = ImageIO.read(new File("Visuals/PurpleBlock(1).png"));
+            blockImages[11] = ImageIO.read(new File("Visuals/PurpleBlock(2).png"));
+            blockImages[12] = ImageIO.read(new File("Visuals/PurpleBlock(3).png"));
+            blockImages[13] = ImageIO.read(new File("Visuals/PurpleBlock(4).png"));
+            blockImages[14] = ImageIO.read(new File("Visuals/Red Block (4)(1).png"));
+            blockImages[15] = ImageIO.read(new File("Visuals/Red Block (4)(5).png"));
+            blockImages[16] = ImageIO.read(new File("Visuals/Red Block (4)(6).png"));
+            blockImages[17] = ImageIO.read(new File("Visuals/Red Block (4)(7).png"));
+            blockImages[18] = ImageIO.read(new File("Visuals/Yellow Block.png"));
+
+            blockImage = blockImages[0];
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        rect1.setLocation(300, 300);
+        rect1.setLocation(rectX, rectY);
         g2d.setStroke(new BasicStroke(3));
         g2d.setColor(Color.BLACK);
         g2d.fill(rect1);
-
 
     }
 
@@ -66,14 +98,14 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         int currentY = (int) rect1.getY();
 
         int key = e.getKeyCode();
-        if (key == 38) {  // up key
-            rectY = currentY - 5;
-        } else if (key == 40) { // down key
-            rectY = currentY + 5;
-        } else if (key == 37) { // left key
-            rectX = currentX - 5;
-        } else if (key == 39) {  // right key
-            rectX = currentX + 5;
+        if (key == KeyEvent.VK_UP) {  // up key
+           block.rotate();
+        } else if (key == KeyEvent.VK_DOWN) { // down key
+            block.moveDown();
+        } else if (key == KeyEvent.VK_LEFT) { // left key
+            block.moveLeft();
+        } else if (key == KeyEvent.VK_RIGHT) {  // right key
+            block.moveRight();
         }
 
         repaint();
@@ -108,4 +140,20 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) { }
+
+    private void moveBlockDown(){
+        rectY += 30;
+        if(rectY + rect1.getHeight() >= getHeight()){
+            rectY = getHeight() - (int) rect1.getHeight();
+            timer.stop();
+        }
+        repaint();
+    }
+
+    private void spawnNewBlock(){
+        rectX = 300;
+        rectY = 0;
+        rect1.setLocation(rectX, rectY);
+    }
+
 }
