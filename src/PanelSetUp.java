@@ -17,23 +17,19 @@ import java.awt.Point;
 import javax.swing.Timer;
 
 public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
-    private int rectX;
-    private int rectY;
     private Rectangle rect1;
     private Timer timer;
     private int blockFallSpeed = 500;
     private int wave = 1;
     private int waveIncreaseInterval = 5;
-    private int rect2X;
-    private int rect2Y;
-    private Rectangle rect2;
     private Image[] blockImages = new Image[19];
     private Image blockImage;
     private String message;
-    private Color rectColor;
     private Block block;
     private BufferedImage grid;
     private BufferedImage title;
+    private BufferedImage zaif;
+    private BufferedImage reyvin;
     private StyledDocument doc;
     private Style style;
     private JTextPane textPane;
@@ -60,12 +56,15 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     public void makeFrame() {
         OutputWindow game = new OutputWindow("Teris");
         try {
-            grid = ImageIO.read(new File("Visuals//Outline (1).png"));
-            title = ImageIO.read(new File("Visuals//title (1).png"));
+            grid = ImageIO.read(new File("Visuals\\Outline (1).png"));
+            title = ImageIO.read(new File("Visuals\\title  (1).png"));
+            zaif = ImageIO.read(new File("Visuals\\ZAIFBOSSFIGHT.png"));
+            reyvin = ImageIO.read(new File("Visuals\\Reyvin.png"));
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
         }
+
 
         // Debugging: Confirm image loading
         if (grid == null) {
@@ -74,21 +73,10 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         if (title == null) {
             System.out.println("Error: Title image not found.");
         }
-
-        rect1 = new Rectangle(100, 100);
-        rectX = 300;
-        rectY = 0;
-
         timer = new Timer(blockFallSpeed, e -> moveBlockDown());
         timer.start();
 
-        // initialize second rectangle and its x and y location
-        rect2X = 230;
-        rect2Y = 5;
-        rect2 = new Rectangle(20, 20);
-
         message = "mouse click: ";
-        rectColor = Color.RED;
 
         addMouseListener(this);
         addKeyListener(this);
@@ -96,27 +84,30 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         requestFocusInWindow();
     }
 
+    private void moveBlockDown() {
+    }
+
     public void loadBlockImages() {
         try {
-            blockImages[0] = ImageIO.read(new File("Visuals/BlueBlock(1).png"));
-            blockImages[1] = ImageIO.read(new File("Visuals/BlueBlock(2).png"));
-            blockImages[2] = ImageIO.read(new File("Visuals/BlueBlock(3).png"));
-            blockImages[3] = ImageIO.read(new File("Visuals/BlueBlock(4).png"));
-            blockImages[4] = ImageIO.read(new File("Visuals/CyanBlock(1).png"));
-            blockImages[5] = ImageIO.read(new File("Visuals/CyanBlock(2).png"));
-            blockImages[6] = ImageIO.read(new File("Visuals/GreenBlock(1).png"));
-            blockImages[7] = ImageIO.read(new File("Visuals/GreenBlock(2).png"));
-            blockImages[8] = ImageIO.read(new File("Visuals/OrangeBlock(1).png"));
-            blockImages[9] = ImageIO.read(new File("Visuals/OrangeBlock(2).png"));
-            blockImages[10] = ImageIO.read(new File("Visuals/PurpleBlock(1).png"));
-            blockImages[11] = ImageIO.read(new File("Visuals/PurpleBlock(2).png"));
-            blockImages[12] = ImageIO.read(new File("Visuals/PurpleBlock(3).png"));
-            blockImages[13] = ImageIO.read(new File("Visuals/PurpleBlock(4).png"));
-            blockImages[14] = ImageIO.read(new File("Visuals/Red Block (4)(1).png"));
-            blockImages[15] = ImageIO.read(new File("Visuals/Red Block (4)(5).png"));
-            blockImages[16] = ImageIO.read(new File("Visuals/Red Block (4)(6).png"));
-            blockImages[17] = ImageIO.read(new File("Visuals/Red Block (4)(7).png"));
-            blockImages[18] = ImageIO.read(new File("Visuals/Yellow Block.png"));
+            blockImages[0] = ImageIO.read(new File("Visuals\\BlueBlock(1).png"));
+            blockImages[1] = ImageIO.read(new File("Visuals\\BlueBlock(2).png"));
+            blockImages[2] = ImageIO.read(new File("Visuals\\BlueBlock(3).png"));
+            blockImages[3] = ImageIO.read(new File("Visuals\\BlueBlock(4).png"));
+            blockImages[4] = ImageIO.read(new File("Visuals\\CyanBlock(1).png"));
+            blockImages[5] = ImageIO.read(new File("Visuals\\CyanBlock(2).png"));
+            blockImages[6] = ImageIO.read(new File("Visuals\\GreenBlock(1).png"));
+            blockImages[7] = ImageIO.read(new File("Visuals\\/GreenBlock(2).png"));
+            blockImages[8] = ImageIO.read(new File("Visuals\\OrangeBlock(1).png"));
+            blockImages[9] = ImageIO.read(new File("Visuals\\OrangeBlock(2).png"));
+            blockImages[10] = ImageIO.read(new File("Visuals\\PurpleBlock(1).png"));
+            blockImages[11] = ImageIO.read(new File("Visuals\\PurpleBlock(2).png"));
+            blockImages[12] = ImageIO.read(new File("Visuals\\PurpleBlock(3).png"));
+            blockImages[13] = ImageIO.read(new File("Visuals\\PurpleBlock(4).png"));
+            blockImages[14] = ImageIO.read(new File("Visuals\\Red Block (4)(1).png"));
+            blockImages[15] = ImageIO.read(new File("Visuals\\Red Block (4)(5).png"));
+            blockImages[16] = ImageIO.read(new File("Visuals\\Red Block (4)(6).png"));
+            blockImages[17] = ImageIO.read(new File("Visuals\\Red Block (4)(7).png"));
+            blockImages[18] = ImageIO.read(new File("Visuals\\Yellow Block.png"));
 
             blockImage = blockImages[0];
         } catch (IOException e) {
@@ -125,19 +116,21 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         }
     }
 
+    public void updateTimer(){
+        repaint();
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         makeFrame();
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.setStroke(new BasicStroke(3));
-        g2d.setColor(Color.BLACK);
-        g2d.fill(rect1);
-
+        g.drawImage(zaif, 300 , 0, null);
         g.drawString(String.valueOf(logic.getTime()), 10, 10);
         g.drawImage(grid, 200, 20, null);
         g.drawImage(title, 700, 5, null);
+        g.drawImage(reyvin, 800, 0, null);
     }
 
     @Override

@@ -7,7 +7,7 @@ public class Music {
 
     public Music(){
         // Debugging: Check if the file path is correct
-        soundURL[0] = getClass().getResource("/res/sounds/BARNEY.wav");
+        soundURL[0] = getClass().getResource("res\\sounds\\BARNEY.wav");
 
         // Debugging: Verify sound URL is not null
         if (soundURL[0] == null) {

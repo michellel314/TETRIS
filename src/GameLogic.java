@@ -11,12 +11,13 @@ public class GameLogic implements ActionListener {
     private int time = 0;
     PanelSetUp panel;
     Shop shop;
-    Music music = new Music();
+    Music music;
 
     public GameLogic() {
         scan = new Scanner(System.in);
         panel = new PanelSetUp(this);
         timer = new Timer(1000, this);
+        music = new Music();
         timer.start();
     }
 
@@ -48,5 +49,6 @@ public class GameLogic implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         time++;
+        panel.updateTimer();
     }
 }
