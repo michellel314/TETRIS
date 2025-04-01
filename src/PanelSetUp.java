@@ -14,9 +14,6 @@ import java.io.IOException;
 import java.awt.Image;
 import java.io.File;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.Timer;
 
 public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
@@ -27,31 +24,30 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private int blockFallSpeed = 500;
     private int wave = 1;
     private int waveIncreaseInterval = 5;
-    // add second rectangle and its x and y location as instance variables
     private int rect2X;
     private int rect2Y;
     private Rectangle rect2;
-    private Image[] blockImages = new Image[18];
+    private Image[] blockImages = new Image[19];
     private Image blockImage;
     private String message;
     private Color rectColor;
     private Block block;
-
+    private BufferedImage grid;
+    private BufferedImage title;
     private StyledDocument doc;
     private Style style;
     private JTextPane textPane;
     private String name;
-    private BufferedImage grid;
-    private BufferedImage title;
     private GameLogic logic;
     Music music = new Music();
     final int scale = 3;
 
-    public void setUpGame(){
+    public void setUpGame() {
         music.setFile(0);
         music.play();
     }
-    public PanelSetUp(GameLogic logic){
+
+    public PanelSetUp(GameLogic logic) {
         textPane = new JTextPane(); // panel that can handle custom text
         textPane.setEditable(false); // prevents user from typing into window
         doc = textPane.getStyledDocument(); // call getter method for panel's style doc
@@ -62,8 +58,22 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     }
 
     public void makeFrame() {
-
         OutputWindow game = new OutputWindow("Teris");
+        try {
+            grid = ImageIO.read(new File("Visuals//Outline (1).png"));
+            title = ImageIO.read(new File("Visuals//title (1).png"));
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        // Debugging: Confirm image loading
+        if (grid == null) {
+            System.out.println("Error: Grid image not found.");
+        }
+        if (title == null) {
+            System.out.println("Error: Title image not found.");
+        }
 
         rect1 = new Rectangle(100, 100);
         rectX = 300;
@@ -71,6 +81,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
         timer = new Timer(blockFallSpeed, e -> moveBlockDown());
         timer.start();
+
         // initialize second rectangle and its x and y location
         rect2X = 230;
         rect2Y = 5;
@@ -85,8 +96,8 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         requestFocusInWindow();
     }
 
-    public void loadBlockImages(){
-        try{
+    public void loadBlockImages() {
+        try {
             blockImages[0] = ImageIO.read(new File("Visuals/BlueBlock(1).png"));
             blockImages[1] = ImageIO.read(new File("Visuals/BlueBlock(2).png"));
             blockImages[2] = ImageIO.read(new File("Visuals/BlueBlock(3).png"));
@@ -108,7 +119,8 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
             blockImages[18] = ImageIO.read(new File("Visuals/Yellow Block.png"));
 
             blockImage = blockImages[0];
-        } catch (IOException e){
+        } catch (IOException e) {
+            System.out.println("Error loading block images: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -119,18 +131,18 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        rect1.setLocation(rectX, rectY);
         g2d.setStroke(new BasicStroke(3));
         g2d.setColor(Color.BLACK);
         g2d.fill(rect1);
 
         g.drawString(String.valueOf(logic.getTime()), 10, 10);
         g.drawImage(grid, 200, 20, null);
-        g.drawImage(title, 700 , 5, null);
+        g.drawImage(title, 700, 5, null);
     }
 
     @Override
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -139,61 +151,43 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_UP) {  // up key
-           block.rotate();
+            block.rotate();
         } else if (key == KeyEvent.VK_DOWN) { // down key
             block.moveDown();
-        } else if (key == KeyEvent.VK_LEFT) { // left key
+        } else if (key == KeyEvent.VK_LEFT) {
             block.moveLeft();
-        } else if (key == KeyEvent.VK_RIGHT) {  // right key
+        } else {
             block.moveRight();
         }
-
-        repaint();
     }
 
     @Override
-    public void keyReleased(KeyEvent e) { }
+    public void keyReleased(KeyEvent e) {
+
+    }
 
     @Override
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseClicked(MouseEvent e) {
+
+    }
 
     @Override
-    public void mousePressed(MouseEvent e) { }
+    public void mousePressed(MouseEvent e) {
+
+    }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            Point mouseClickLocation = e.getPoint();
-            message = "mouse click: (" + mouseClickLocation.getX() + ", " + mouseClickLocation.getY() + ")";
-            if (rect1.contains(mouseClickLocation)) {
-                rectColor = Color.GREEN;
-            } else {
-                rectColor = Color.RED;
-            }
 
-            repaint();
-        }
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) { }
+    public void mouseEntered(MouseEvent e) {
+
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) {
 
-    private void moveBlockDown(){
-        rectY += 30;
-        if(rectY + rect1.getHeight() >= getHeight()){
-            rectY = getHeight() - (int) rect1.getHeight();
-            timer.stop();
-        }
-        repaint();
     }
-
-    private void spawnNewBlock(){
-        rectX = 300;
-        rectY = 0;
-        rect1.setLocation(rectX, rectY);
-    }
-
 }

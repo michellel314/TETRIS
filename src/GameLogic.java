@@ -1,10 +1,7 @@
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.Timer;
-
 
 public class GameLogic implements ActionListener {
     private Player player;
@@ -16,16 +13,19 @@ public class GameLogic implements ActionListener {
     Shop shop;
     Music music = new Music();
 
-    public GameLogic(){
+    public GameLogic() {
         scan = new Scanner(System.in);
         panel = new PanelSetUp(this);
         timer = new Timer(1000, this);
         timer.start();
     }
 
-    public void start(){
+    public void start() {
         createPlayer();
         game = new OutputWindow("Teris", this, this.panel);
+
+        // Debugging: Confirm game start
+        System.out.println("Game started for player: " + player.getName());
     }
 
     public int getTime() {
@@ -36,16 +36,17 @@ public class GameLogic implements ActionListener {
         timer.restart();
     }
 
-    private void createPlayer(){
+    private void createPlayer() {
         System.out.print("Enter your name: ");
         String name = scan.nextLine();
         player = new Player(name, 0);
-    }
 
+        // Debugging: Player creation
+        System.out.println("Player created with name: " + name);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         time++;
-        panel.updateTimer();
     }
 }
