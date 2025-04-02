@@ -29,7 +29,7 @@ public class GameLogic implements ActionListener {
         timer.start();
         music.setFile();
         game = new OutputWindow("Teris", this, this.panel);
-
+        panel.loadBlockImages();
         // Debugging: Confirm game start
         System.out.println("Game started for player: " + player.getName());
     }

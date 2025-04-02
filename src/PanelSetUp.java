@@ -96,6 +96,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         }
     }
 
+
     public void updateTimer() throws IOException {
         repaint();
         if (logic.getTime() == 5) {
@@ -163,5 +164,24 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    private void generateBlock(Graphics g){
+        int number = (int) (Math.random() * 6) + 1;
+        if(number == 1){
+            g.drawImage(blockImages[0], 700, 10, null);
+        } else if (number == 2){
+            g.drawImage(blockImages[1], 700, 10, null);
+        } else if (number == 3){
+            g.drawImage(blockImages[2], 700, 10, null);
+        } else if (number == 4){
+            g.drawImage(blockImages[3], 700, 10, null);
+        } else if (number == 5){
+            g.drawImage(blockImages[4], 700, 10, null);
+        } else if (number == 6){
+            g.drawImage(blockImages[5], 700, 10, null);
+        } else {
+            g.drawImage(blockImages[6], 700, 10, null);
+        }
     }
 }
