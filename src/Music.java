@@ -1,42 +1,40 @@
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.net.URL;
+import java.io.File;
+import java.sql.SQLOutput;
 
 public class Music {
     Clip clip;
-    URL soundURL[] = new URL[10];
+    String soundURL;
 
-    public Music(){
+    public Music(String e){
         // Debugging: Check if the file path is correct
-        soundURL[0] = getClass().getResource("res\\sounds\\BARNEY.wav");
+        soundURL = e;
 
         // Debugging: Verify sound URL is not null
-        if (soundURL[0] == null) {
+        if (soundURL == null) {
             System.out.println("Error: Sound file 'BARNEY.wav' not found!");
         }
     }
 
-    public void setFile(int i) {
+    public void setFile() {
         try {
-            if (soundURL[i] == null) {
-                System.out.println("Error: No sound file loaded at index " + i);
-                return;
-            }
+            File music = new File(soundURL);
 
-            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
-            clip = AudioSystem.getClip();
-            clip.open(ais);
+            if(music.exists()) {
+                AudioInputStream ais = AudioSystem.getAudioInputStream(new File(soundURL));
+                clip = AudioSystem.getClip();
+                clip.open(ais);
+                clip.start();
+            } else {
+                System.out.println("Can't find file");
+            }
 
         } catch (Exception e) {
             System.out.println("Error loading sound file: " + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    public void play() {
-        if (clip != null) {
-            clip.start();
-        } else {
-            System.out.println("Error: Clip is not initialized.");
         }
     }
 

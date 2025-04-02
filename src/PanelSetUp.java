@@ -22,26 +22,20 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private int blockFallSpeed = 500;
     private int wave = 1;
     private int waveIncreaseInterval = 5;
-    private Image[] blockImages = new Image[19];
+    private Image[] blockImages = new Image[7];
     private Image blockImage;
     private String message;
     private Block block;
     private BufferedImage grid;
     private BufferedImage title;
-    private BufferedImage zaif;
     private BufferedImage reyvin;
     private StyledDocument doc;
     private Style style;
     private JTextPane textPane;
     private String name;
     private GameLogic logic;
-    Music music = new Music();
     final int scale = 3;
 
-    public void setUpGame() {
-        music.setFile(0);
-        music.play();
-    }
 
     public PanelSetUp(GameLogic logic) {
         textPane = new JTextPane(); // panel that can handle custom text
@@ -58,8 +52,6 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         try {
             grid = ImageIO.read(new File("Visuals\\Outline (1).png"));
             title = ImageIO.read(new File("Visuals\\title  (1).png"));
-            zaif = ImageIO.read(new File("Visuals\\ZAIFBOSSFIGHT.png"));
-            reyvin = ImageIO.read(new File("Visuals\\Reyvin.png"));
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
@@ -90,24 +82,12 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     public void loadBlockImages() {
         try {
             blockImages[0] = ImageIO.read(new File("Visuals\\BlueBlock(1).png"));
-            blockImages[1] = ImageIO.read(new File("Visuals\\BlueBlock(2).png"));
-            blockImages[2] = ImageIO.read(new File("Visuals\\BlueBlock(3).png"));
-            blockImages[3] = ImageIO.read(new File("Visuals\\BlueBlock(4).png"));
-            blockImages[4] = ImageIO.read(new File("Visuals\\CyanBlock(1).png"));
-            blockImages[5] = ImageIO.read(new File("Visuals\\CyanBlock(2).png"));
-            blockImages[6] = ImageIO.read(new File("Visuals\\GreenBlock(1).png"));
-            blockImages[7] = ImageIO.read(new File("Visuals\\/GreenBlock(2).png"));
-            blockImages[8] = ImageIO.read(new File("Visuals\\OrangeBlock(1).png"));
-            blockImages[9] = ImageIO.read(new File("Visuals\\OrangeBlock(2).png"));
-            blockImages[10] = ImageIO.read(new File("Visuals\\PurpleBlock(1).png"));
-            blockImages[11] = ImageIO.read(new File("Visuals\\PurpleBlock(2).png"));
-            blockImages[12] = ImageIO.read(new File("Visuals\\PurpleBlock(3).png"));
-            blockImages[13] = ImageIO.read(new File("Visuals\\PurpleBlock(4).png"));
-            blockImages[14] = ImageIO.read(new File("Visuals\\Red Block (4)(1).png"));
-            blockImages[15] = ImageIO.read(new File("Visuals\\Red Block (4)(5).png"));
-            blockImages[16] = ImageIO.read(new File("Visuals\\Red Block (4)(6).png"));
-            blockImages[17] = ImageIO.read(new File("Visuals\\Red Block (4)(7).png"));
-            blockImages[18] = ImageIO.read(new File("Visuals\\Yellow Block.png"));
+            blockImages[1] = ImageIO.read(new File("Visuals\\CyanBlock(1).png"));
+            blockImages[2] = ImageIO.read(new File("Visuals\\GreenBlock(1).png"));
+            blockImages[3] = ImageIO.read(new File("Visuals\\OrangeBlock(1).png"));
+            blockImages[4] = ImageIO.read(new File("Visuals\\PurpleBlock(1).png"));
+            blockImages[5] = ImageIO.read(new File("Visuals\\Red Block(1).png"));
+            blockImages[6] = ImageIO.read(new File("Visuals\\Yellow Block.png"));
 
             blockImage = blockImages[0];
         } catch (IOException e) {
@@ -116,21 +96,22 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         }
     }
 
-    public void updateTimer(){
+    public void updateTimer() throws IOException {
         repaint();
+        if (logic.getTime() == 5) {
+            logic.music.stop();
+            logic.startBossFight();
+        }
+
     }
 
     @Override
     public void paintComponent(Graphics g) {
         makeFrame();
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-
-        g.drawImage(zaif, 300 , 0, null);
         g.drawString(String.valueOf(logic.getTime()), 10, 10);
         g.drawImage(grid, 200, 20, null);
         g.drawImage(title, 700, 5, null);
-        g.drawImage(reyvin, 800, 0, null);
     }
 
     @Override

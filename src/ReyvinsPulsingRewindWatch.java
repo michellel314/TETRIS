@@ -1,7 +1,9 @@
+import java.io.File;
+
 public class ReyvinsPulsingRewindWatch extends Equipment{
     private int rewind;
-    public ReyvinsPulsingRewindWatch(String name, int score, int uses, int rewind){
-        super(name, score, uses);
+    public ReyvinsPulsingRewindWatch(File file, String name, int score, int uses, int rewind){
+        super(file, name, score, uses);
         this.rewind = rewind;
     }
 

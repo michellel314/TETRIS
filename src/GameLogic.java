@@ -1,5 +1,7 @@
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.Timer;
 
@@ -12,17 +14,20 @@ public class GameLogic implements ActionListener {
     PanelSetUp panel;
     Shop shop;
     Music music;
+    BossFight zaif;
+    public int score;
 
     public GameLogic() {
         scan = new Scanner(System.in);
         panel = new PanelSetUp(this);
         timer = new Timer(1000, this);
-        music = new Music();
-        timer.start();
+        music = new Music("sounds\\MAINSONG.wav");
     }
 
     public void start() {
         createPlayer();
+        timer.start();
+        music.setFile();
         game = new OutputWindow("Teris", this, this.panel);
 
         // Debugging: Confirm game start
@@ -46,9 +51,18 @@ public class GameLogic implements ActionListener {
         System.out.println("Player created with name: " + name);
     }
 
+    public void startBossFight() throws IOException {
+        zaif = new BossFight(this.panel);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         time++;
-        panel.updateTimer();
+        try {
+            panel.updateTimer();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
     }
 }

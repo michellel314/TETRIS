@@ -1,7 +1,9 @@
+import java.io.File;
+
 public class ReyvinsStiffShovel extends Equipment{
     private int numberOfRows;
-    public ReyvinsStiffShovel(String name, int score, int uses, int numberOfRows){
-        super(name, score, uses);
+    public ReyvinsStiffShovel(File file, String name, int score, int uses, int numberOfRows){
+        super(file, name, score, uses);
         this.numberOfRows = numberOfRows;
     }
 
