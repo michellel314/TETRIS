@@ -35,7 +35,7 @@ public class BossFight extends JPanel implements KeyListener, MouseListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(zaif, 200, 0, null);
+        g.drawImage(zaif, 900, 300, null);
     }
 
     @Override

@@ -111,7 +111,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         super.paintComponent(g);
         g.drawString(String.valueOf(logic.getTime()), 10, 10);
         g.drawImage(grid, 200, 20, null);
-        g.drawImage(title, 700, 5, null);
+        g.drawImage(title, 725, 5, null);
     }
 
     @Override
