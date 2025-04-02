@@ -20,6 +20,4 @@ public class OutputWindow {
         frame.setVisible(true); // display the frame on screen
     }
 
-    public OutputWindow(String teris) {
-    }
 }
