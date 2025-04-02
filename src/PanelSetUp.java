@@ -28,16 +28,18 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private Block block;
     private BufferedImage grid;
     private BufferedImage title;
-    private BufferedImage reyvin;
     private StyledDocument doc;
     private Style style;
     private JTextPane textPane;
     private String name;
     private GameLogic logic;
     final int scale = 3;
+    OutputWindow game;
+    BossFight zaif;
+    public boolean bossFightStarted;
 
 
-    public PanelSetUp(GameLogic logic) {
+    public PanelSetUp(GameLogic logic, BossFight zaif) {
         textPane = new JTextPane(); // panel that can handle custom text
         textPane.setEditable(false); // prevents user from typing into window
         doc = textPane.getStyledDocument(); // call getter method for panel's style doc
@@ -45,10 +47,12 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         StyleConstants.setFontSize(style, 25); // apply font size to custom style
         add(textPane); // add the panel to the frame
         this.logic = logic;
+        this.zaif = zaif;
+        makeFrame();
+
     }
 
     public void makeFrame() {
-        OutputWindow game = new OutputWindow("Teris");
         try {
             grid = ImageIO.read(new File("Visuals\\Outline (1).png"));
             title = ImageIO.read(new File("Visuals\\title  (1).png"));
@@ -100,6 +104,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         repaint();
         if (logic.getTime() == 5) {
             logic.music.stop();
+            bossFightStarted = true;
             logic.startBossFight();
         }
 
@@ -107,11 +112,13 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        makeFrame();
         super.paintComponent(g);
         g.drawString(String.valueOf(logic.getTime()), 10, 10);
         g.drawImage(grid, 200, 20, null);
         g.drawImage(title, 725, 5, null);
+        if (bossFightStarted){
+            zaif.paintComponent(g);
+        }
     }
 
     @Override

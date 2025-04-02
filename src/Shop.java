@@ -18,12 +18,17 @@ public class Shop extends JPanel implements KeyListener, MouseListener {
     private ReyvinsStiffShovel shovel;
     private BufferedImage shop;
 
-    public Shop() throws IOException {
+    public Shop() {
         highheels = new ReyvinsGirlyPopHighHeels(new File("Visuals\\HighHeels.png"),"Reyvin's Girly-Pop High Heels", 50, 1, 50);
         watch = new ReyvinsPulsingRewindWatch(new File("Visuals\\Watch.png"), "Reyvin's Pulsing Rewind Watch", 75, 1, 1);
         gun = new ReyvinsQuirkyStunGun(new File("Visuals\\Gun.png"), "Reyvin's Quirky Stun Gun", 80, 3, 5);
         shovel = new ReyvinsStiffShovel(new File("Visuals\\Shovel.png"), "Reyvin's Stiff Shovel", 50, 1, 1);
-        BufferedImage shop = ImageIO.read(new File("Visuals\\ShopBackground.png"));
+
+        try {
+            shop = ImageIO.read(new File("Visuals\\ShopBackground.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -19,10 +19,14 @@ public class BossFight extends JPanel implements KeyListener, MouseListener {
     public BossFight(PanelSetUp panel) throws IOException {
         this.panel = panel;
         makeImage();
+    }
+
+    public void start(){
         music = new Music("sounds\\BARNEY.wav");
         music.setFile();
         music.loop();
     }
+
     public void endBossFight(){
         music.stop();
         music.close();

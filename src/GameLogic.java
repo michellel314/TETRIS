@@ -17,9 +17,10 @@ public class GameLogic implements ActionListener {
     BossFight zaif;
     public int score;
 
-    public GameLogic() {
+    public GameLogic() throws IOException {
         scan = new Scanner(System.in);
-        panel = new PanelSetUp(this);
+        zaif = new BossFight(this.panel);
+        panel = new PanelSetUp(this, zaif);
         timer = new Timer(1000, this);
         music = new Music("sounds\\MAINSONG.wav");
     }
@@ -52,7 +53,7 @@ public class GameLogic implements ActionListener {
     }
 
     public void startBossFight() throws IOException {
-        zaif = new BossFight(this.panel);
+        zaif.start();
     }
 
     @Override
