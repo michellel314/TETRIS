@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import javax.imageio.ImageIO;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -16,7 +13,7 @@ import java.io.File;
 import java.awt.Point;
 import javax.swing.Timer;
 
-public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
+public class PanelSetUp extends JPanel implements KeyListener, ActionListener, MouseListener {
     private Rectangle rect1;
     private Timer timer;
     private int blockFallSpeed = 500;
@@ -39,8 +36,8 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     BossFight zaif;
     public boolean bossFightStarted;
 
-
-    public PanelSetUp(GameLogic logic, BossFight zaif) {
+    public PanelSetUp(GameLogic logic, BossFight zaif) throws IOException {
+        logic = new GameLogic(this);
         textPane = new JTextPane(); // panel that can handle custom text
         textPane.setEditable(false); // prevents user from typing into window
         doc = textPane.getStyledDocument(); // call getter method for panel's style doc
@@ -51,7 +48,9 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         this.zaif = zaif;
         makeFrame();
         type = generateBlock();
-        block = new Block(type);
+        block = logic.getCurrentBlock();
+        setFocusable(true);
+        addKeyListener(this);
     }
 
     public void makeFrame() {
@@ -64,44 +63,12 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         }
 
 
-        // Debugging: Confirm image loading
-        if (grid == null) {
-            System.out.println("Error: Grid image not found.");
-        }
-        if (title == null) {
-            System.out.println("Error: Title image not found.");
-        }
-        timer = new Timer(blockFallSpeed, e -> moveBlockDown());
-        timer.start();
-
-        message = "mouse click: ";
 
         addMouseListener(this);
         addKeyListener(this);
         setFocusable(true);
         requestFocusInWindow();
     }
-
-    private void moveBlockDown() {
-    }
-
-    public void loadBlockImages() {
-        try {
-            blockImages[0] = ImageIO.read(new File("Visuals\\BlueBlock(1).png"));
-            blockImages[1] = ImageIO.read(new File("Visuals\\CyanBlock(1).png"));
-            blockImages[2] = ImageIO.read(new File("Visuals\\GreenBlock(1).png"));
-            blockImages[3] = ImageIO.read(new File("Visuals\\OrangeBlock(1).png"));
-            blockImages[4] = ImageIO.read(new File("Visuals\\PurpleBlock(1).png"));
-            blockImages[5] = ImageIO.read(new File("Visuals\\Red Block(1).png"));
-            blockImages[6] = ImageIO.read(new File("Visuals\\Yellow Block.png"));
-
-            blockImage = blockImages[0];
-        } catch (IOException e) {
-            System.out.println("Error loading block images: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
 
     public void updateTimer() throws IOException {
         repaint();
@@ -119,6 +86,8 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         g.drawString(String.valueOf(logic.getTime()), 10, 10);
         g.drawImage(grid, 200, 20, null);
         g.drawImage(title, 725, 5, null);
+        Block b = logic.getCurrentBlock();
+        g.drawImage(b.getImage(), b.getX(), b.getY(), this);
         if (bossFightStarted){
             zaif.paintComponent(g);
         }
@@ -130,18 +99,15 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int currentX = (int) rect1.getX();
-        int currentY = (int) rect1.getY();
-
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_UP) {  // up key
-            block.rotateClockwise();
+        if (key == KeyEvent.VK_UP) {  // up key// .rotateClockwise();
+            logic.rotateBlock();
         } else if (key == KeyEvent.VK_DOWN) { // down key
-            block.moveDown();
+            logic.moveBlockDown();
         } else if (key == KeyEvent.VK_LEFT) {
-            block.moveLeft();
+            logic.moveBlockLeft();
         } else {
-            block.moveRight();
+            logic.moveBlockRight();
         }
     }
 
@@ -192,5 +158,10 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         } else {
             return "G";
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
