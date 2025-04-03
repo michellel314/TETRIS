@@ -20,7 +20,8 @@ public class GameLogic implements ActionListener {
     public GameLogic() throws IOException {
         scan = new Scanner(System.in);
         zaif = new BossFight(this.panel);
-        panel = new PanelSetUp(this, zaif);
+        shop = new Shop();
+        panel = new PanelSetUp(this, zaif, this.shop);
         timer = new Timer(1000, this);
         music = new Music("sounds\\MAINSONG.wav");
     }
@@ -53,9 +54,20 @@ public class GameLogic implements ActionListener {
     }
 
     public void startBossFight() throws IOException {
+        panel.bossFightStarted = true;
         zaif.start();
     }
 
+    public void openShop(){
+        panel.gameRunning = false;
+        panel.isShopOpen = true;
+        shop.openShop();
+    }
+
+    public void closeShop(){
+        panel.isShopOpen = false;
+        panel.gameRunning = true;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         time++;

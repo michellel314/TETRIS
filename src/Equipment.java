@@ -2,20 +2,20 @@ import java.io.File;
 
 public class Equipment{
 
-    private int uses;
+    public Boolean existsInInv;
     String name;
     int score;
     File file;
 
-    public Equipment(File file, String name, int score, int uses) {
-        this.uses = uses;
+    public Equipment(File file, String name, int score, Boolean existsInInv) {
+        this.existsInInv = existsInInv;
         this.name = name;
         this.score = score;
         this.file = file;
     }
 
-    public int getUses() {
-        return uses;
+    public Boolean getExistsInInv() {
+        return existsInInv;
     }
 
     public File getFile(){
@@ -23,12 +23,8 @@ public class Equipment{
     }
 
     public String equipmentUsed() {
-        if (uses == 0) {
-            return name + " is broken.";
-        } else {
-            uses--;
-            return "you used " + name;
-        }
+        existsInInv = false;
+        return "you used " + name;
     }
 
 }

@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Shop extends JPanel implements KeyListener, MouseListener {
+public class Shop implements KeyListener, MouseListener {
 
 
     private ReyvinsGirlyPopHighHeels highheels;
@@ -17,24 +17,30 @@ public class Shop extends JPanel implements KeyListener, MouseListener {
     private ReyvinsQuirkyStunGun gun;
     private ReyvinsStiffShovel shovel;
     private BufferedImage shop;
+    private BufferedImage reyvin;
 
     public Shop() {
-        highheels = new ReyvinsGirlyPopHighHeels(new File("Visuals\\HighHeels.png"),"Reyvin's Girly-Pop High Heels", 50, 1, 50);
-        watch = new ReyvinsPulsingRewindWatch(new File("Visuals\\Watch.png"), "Reyvin's Pulsing Rewind Watch", 75, 1, 1);
-        gun = new ReyvinsQuirkyStunGun(new File("Visuals\\Gun.png"), "Reyvin's Quirky Stun Gun", 80, 3, 5);
-        shovel = new ReyvinsStiffShovel(new File("Visuals\\Shovel.png"), "Reyvin's Stiff Shovel", 50, 1, 1);
+        highheels = new ReyvinsGirlyPopHighHeels(new File("Visuals\\HighHeels.png"),"Reyvin's Girly-Pop High Heels", 50, false, 50);
+        watch = new ReyvinsPulsingRewindWatch(new File("Visuals\\Watch.png"), "Reyvin's Pulsing Rewind Watch", 75, false, 1);
+        gun = new ReyvinsQuirkyStunGun(new File("Visuals\\Gun.png"), "Reyvin's Quirky Stun Gun", 80, false, 5);
+        shovel = new ReyvinsStiffShovel(new File("Visuals\\Shovel.png"), "Reyvin's Stiff Shovel", 50, false, 1);
 
         try {
             shop = ImageIO.read(new File("Visuals\\ShopBackground.png"));
+            reyvin = ImageIO.read(new File("Visuals\\Reyvin.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(shop, 200, 0, null);
+    public BufferedImage getShop() {
+        return shop;
+    }
+    public BufferedImage getReyvin(){
+        return reyvin;
+    }
+
+    public void openShop(){
     }
 
     @Override

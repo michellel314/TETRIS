@@ -14,8 +14,8 @@ public class OutputWindow {
     public OutputWindow(String name, GameLogic logic, PanelSetUp panel) {
         JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // causes program to end when window is X'd out
-        frame.setSize(1000, 1000); // window size
-        frame.setLocation(300, 30); // where on screen window appears
+        frame.setSize(2000, 1000); // window size
+        frame.setLocation(0, 0); // where on screen window appears
         frame.add(panel);
         frame.setVisible(true); // display the frame on screen
     }

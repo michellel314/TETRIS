@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class BossFight extends JPanel implements KeyListener, MouseListener {
+public class BossFight implements KeyListener, MouseListener {
 
     private BufferedImage zaif;
     Music music;
@@ -27,20 +27,24 @@ public class BossFight extends JPanel implements KeyListener, MouseListener {
         music.loop();
     }
 
-    public void endBossFight(){
+    public void endMusic(){
         music.stop();
         music.close();
+    }
+
+    public BufferedImage getZaif() {
+        return zaif;
     }
 
     public void makeImage() throws IOException {
         zaif = ImageIO.read(new File("Visuals\\ZAIFBOSSFIGHT.png"));
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(zaif, 900, 300, null);
-    }
+//    @Override
+//    public void paintComponent(Graphics g) {
+//        super.paintComponent(g);
+//        g.drawImage(zaif, 900, 300, null);
+//    }
 
     @Override
     public void keyTyped(KeyEvent e) {
