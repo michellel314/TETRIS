@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.Image;
 import java.io.File;
+import java.awt.Point;
 import javax.swing.Timer;
 
 public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
@@ -36,11 +38,9 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     OutputWindow game;
     BossFight zaif;
     public boolean bossFightStarted;
-    public Boolean isShopOpen;
-    private Shop shop;
-    public Boolean gameRunning;
 
-    public PanelSetUp(GameLogic logic, BossFight zaif, Shop shop) {
+
+    public PanelSetUp(GameLogic logic, BossFight zaif) {
         textPane = new JTextPane(); // panel that can handle custom text
         textPane.setEditable(false); // prevents user from typing into window
         doc = textPane.getStyledDocument(); // call getter method for panel's style doc
@@ -49,12 +49,9 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         add(textPane); // add the panel to the frame
         this.logic = logic;
         this.zaif = zaif;
-        this.shop = shop;
         makeFrame();
         type = generateBlock();
         block = new Block(type);
-        isShopOpen = false;
-        gameRunning = true;
     }
 
     public void makeFrame() {
@@ -93,7 +90,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
             blockImages[0] = ImageIO.read(new File("Visuals\\BlueBlock(1).png"));
             blockImages[1] = ImageIO.read(new File("Visuals\\CyanBlock(1).png"));
             blockImages[2] = ImageIO.read(new File("Visuals\\GreenBlock(1).png"));
-            blockImages[3] = ImageIO.read(new File("Visuals\\Orange Block(1).png"));
+            blockImages[3] = ImageIO.read(new File("Visuals\\OrangeBlock(1).png"));
             blockImages[4] = ImageIO.read(new File("Visuals\\PurpleBlock(1).png"));
             blockImages[5] = ImageIO.read(new File("Visuals\\Red Block(1).png"));
             blockImages[6] = ImageIO.read(new File("Visuals\\Yellow Block.png"));
@@ -108,17 +105,10 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
     public void updateTimer() throws IOException {
         repaint();
-        if (logic.getTime() == 20) {
-            logic.music.stop();
-            logic.startBossFight();
-        }
-
         if (logic.getTime() == 5) {
-            logic.openShop();
-        }
-
-        if (logic.getTime() == 15) {
-            logic.closeShop();
+            logic.music.stop();
+            bossFightStarted = true;
+            logic.startBossFight();
         }
 
     }
@@ -126,17 +116,11 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (bossFightStarted){
-            g.drawImage(zaif.getZaif(), 10, 10, null);
-        }
-        if (isShopOpen) {
-            g.drawImage(shop.getShop(), 200, 0, null);
-            g.drawImage(shop.getReyvin(), 308, 500, null);
-        }
         g.drawString(String.valueOf(logic.getTime()), 10, 10);
-        if (gameRunning) {
-            g.drawImage(grid, 200, 20, null);
-            g.drawImage(title, 725, 5, null);
+        g.drawImage(grid, 200, 20, null);
+        g.drawImage(title, 725, 5, null);
+        if (bossFightStarted){
+            zaif.paintComponent(g);
         }
     }
 

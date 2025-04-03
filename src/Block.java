@@ -11,11 +11,13 @@ public class Block {
 
     private int currentRotation = 0;
     private Image image;
-    private int x, y;
+    private int x;
+    private int y;
     private ArrayList<int[][]> rotations;
-    private int rotationIndex;
     private boolean canRotate;
     public Block(String blockType) {
+        this.x = 725;
+        this.y = 20;
         if(blockType.equals("A")){
             blockSprites = new Image[]{new ImageIcon("Yellow Block.png").getImage()};
             canRotate = false;
@@ -67,9 +69,6 @@ public class Block {
         return y;
     }
 
-    public int[][] getShape() {
-        return rotations.get(rotationIndex);
-    }
 
     public void rotateClockwise() {
         if(canRotate){
@@ -84,15 +83,15 @@ public class Block {
     }
 
     public void moveDown() {
-        y++;
+        y += 25;
     }
 
     public void moveLeft() {
-        x--;
+        x -= 25;
     }
 
     public void moveRight() {
-        x++;
+        x += 25;
     }
 
     public Image getImage(){
