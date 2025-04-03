@@ -25,6 +25,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
     private Image[] blockImages = new Image[7];
     private Image blockImage;
     private String message;
+    private String type;
     private Block block;
     private BufferedImage grid;
     private BufferedImage title;
@@ -49,7 +50,8 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
         this.logic = logic;
         this.zaif = zaif;
         makeFrame();
-
+        type = generateBlock();
+        block = new Block(type);
     }
 
     public void makeFrame() {
@@ -133,7 +135,7 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_UP) {  // up key
-            block.rotate();
+            block.rotateClockwise();
         } else if (key == KeyEvent.VK_DOWN) { // down key
             block.moveDown();
         } else if (key == KeyEvent.VK_LEFT) {
@@ -173,22 +175,22 @@ public class PanelSetUp extends JPanel implements KeyListener, MouseListener {
 
     }
 
-    private void generateBlock(Graphics g){
-        int number = (int) (Math.random() * 6) + 1;
-        if(number == 1){
-            g.drawImage(blockImages[0], 700, 10, null);
-        } else if (number == 2){
-            g.drawImage(blockImages[1], 700, 10, null);
-        } else if (number == 3){
-            g.drawImage(blockImages[2], 700, 10, null);
-        } else if (number == 4){
-            g.drawImage(blockImages[3], 700, 10, null);
-        } else if (number == 5){
-            g.drawImage(blockImages[4], 700, 10, null);
-        } else if (number == 6){
-            g.drawImage(blockImages[5], 700, 10, null);
+    private String generateBlock(){
+        int num = (int) (Math.random() * 6) + 1;
+        if(num == 1){
+            return "A";
+        } else if (num == 2){
+            return "B";
+        } else if (num == 3){
+            return "C";
+        } else if (num == 4){
+            return "D";
+        } else if (num == 5){
+            return "E";
+        } else if (num == 6){
+            return "F";
         } else {
-            g.drawImage(blockImages[6], 700, 10, null);
+            return "G";
         }
     }
 }
