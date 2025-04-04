@@ -26,27 +26,39 @@ public class PanelSetUp extends JPanel implements KeyListener {
     private JTextPane textPane;
     private GameLogic logic;
     final int scale = 3;
-    OutputWindow game;
-    BossFight zaif;
-    Shop shop;
+    private OutputWindow game;
+    private BossFight zaif;
     public boolean bossFightStarted;
+    public Boolean isShopOpen;
+    private Shop shop;
+    public Boolean gameRunning;
 
-    public PanelSetUp(){
+    public PanelSetUp(GameLogic logic, BossFight zaif, Shop shop) {
         addKeyListener(this);
         setFocusable(true);
         requestFocusInWindow();
         loadBlockImages();
-    }
-    public PanelSetUp(GameLogic logic, BossFight zaif, Shop shop) {
         this.shop = shop;
         this.logic = logic;
         this.zaif = zaif;
+        textPane = new JTextPane(); // panel that can handle custom text
+        textPane.setEditable(false); // prevents user from typing into window
+        doc = textPane.getStyledDocument(); // call getter method for panel's style doc
+        style = doc.addStyle("my style", null); // add a custom style to the doc
+        StyleConstants.setFontSize(style, 25); // apply font size to custom style
+        add(textPane); // add the panel to the frame
+
+        makeFrame();
+        type = generateBlock();
+        block = new Block(type);
+        isShopOpen = false;
+        gameRunning = true;
     }
 
     public void makeFrame() {
         try {
-            grid = ImageIO.read(new File("Visuals/Outline (1).png"));
-            title = ImageIO.read(new File("Visuals/title  (1).png"));
+            grid = ImageIO.read(new File("Visuals\\Outline (1).png"));
+            title = ImageIO.read(new File("Visuals\\title  (1).png"));
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
@@ -99,47 +111,44 @@ public class PanelSetUp extends JPanel implements KeyListener {
         }
     }
 
-
-    public void setLogic(GameLogic logic, BossFight zaif, Shop shop){
-        this.logic = logic;
-        this.zaif = zaif;
-        this.shop = shop;
-        textPane = new JTextPane(); // panel that can handle custom text
-        textPane.setEditable(false); // prevents user from typing into window
-        doc = textPane.getStyledDocument(); // call getter method for panel's style doc
-        style = doc.addStyle("my style", null); // add a custom style to the doc
-        StyleConstants.setFontSize(style, 25); // apply font size to custom style
-        add(textPane); // add the panel to the frame
-
-        makeFrame();
-        type = generateBlock();
-        block = new Block(type); // Make sure this is creating the block correctly
-    }
-
     public void updateTimer() throws IOException {
         repaint();
-        if (logic.getTime() == 5) {
-            logic.music.stop();
-            bossFightStarted = true;
-            logic.startBossFight();
-        }
+            if (logic.getTime() == 20) {
+                logic.music.stop();
+                bossFightStarted = true;
+                logic.startBossFight();
+            }
 
+            if (logic.getTime() == 5) {
+                logic.openShop();
+            }
+
+            if (logic.getTime() == 15) {
+                logic.closeShop();
+            }
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawString(String.valueOf(logic.getTime()), 10, 10);
-        g.drawImage(grid, 200, 20, null);
-        g.drawImage(title, 725, 5, null);
+        g.drawString(String.valueOf(logic.getTime()), 10, 1000);
         if (block != null) {
             g.drawImage(block.getImage(), block.getX(), block.getY(), null);
         }
 
         // Draw score
         g.drawString("Score: " + logic.getScore(), 10, 10);
+
         if (bossFightStarted){
-            zaif.paintComponent(g);
+            g.drawImage(zaif.getZaif(), 10, 10, null);
+        }
+        if (isShopOpen) {
+            g.drawImage(shop.getShop(), 200, 0, null);
+            g.drawImage(shop.getReyvin(), 308, 500, null);
+        }
+        if (gameRunning) {
+            g.drawImage(grid, 200, 20, null);
+            g.drawImage(title, 725, 5, null);
         }
     }
 

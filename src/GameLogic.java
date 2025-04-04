@@ -16,25 +16,28 @@ public class GameLogic implements ActionListener {
     Shop shop;
     Music music;
     BossFight zaif;
+
+
     public static final int WIDTH = 9;
     private static final int HEIGHT = 17;
     private int[][] grid = new int[HEIGHT][WIDTH];
     private Block currentBlock;
     private int score;
 
-    public GameLogic(PanelSetUp panel2) throws IOException {
-        this.panel2 = panel2;
-        this.panel = panel2;
+    public GameLogic() throws IOException {
+        zaif = new BossFight(this.panel);
+        shop = new Shop();
+        panel = new PanelSetUp(this, zaif, this.shop);
         scan = new Scanner(System.in);
         timer = new Timer(1000, this);
-        music = new Music("sounds/MAINSONG.wav");
+        music = new Music("sounds\\MAINSONG.wav");
+
         for(int i = 0; i < HEIGHT; i++){
             for(int j = 0; j < WIDTH; j++){
                 grid[i][j] = 0;
             }
         }
     }
-
     public void spawnBlock(){
        String blockType = panel.generateBlock();
        currentBlock = new Block(blockType);
@@ -48,11 +51,6 @@ public class GameLogic implements ActionListener {
         }
         currentBlock.moveDown();
         return true;  // Block successfully moved down
-    }
-    public void initialize() throws IOException{
-        zaif = new BossFight(this.panel);
-        shop = new Shop();
-        panel.setLogic(this, zaif, shop);
     }
 
     public void start() {
@@ -91,7 +89,19 @@ public class GameLogic implements ActionListener {
     }
 
     public void startBossFight() throws IOException {
+        panel.bossFightStarted = true;
         zaif.start();
+    }
+
+    public void openShop(){
+        panel.gameRunning = false;
+        panel.isShopOpen = true;
+        shop.openShop();
+    }
+
+    public void closeShop(){
+        panel.isShopOpen = false;
+        panel.gameRunning = true;
     }
 
     @Override
