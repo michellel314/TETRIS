@@ -3,7 +3,9 @@ import java.io.IOException;
 public class GameRunner {
 
     public static void main(String[] args) throws IOException {
-        GameLogic game = new GameLogic();
+        PanelSetUp panel = new PanelSetUp();
+        GameLogic game = new GameLogic(panel);
+        game.initialize();
         game.start();
     }
 }
