@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.imageio.ImageIO;
@@ -15,6 +17,7 @@ import javax.swing.Timer;
 
 public class PanelSetUp extends JPanel implements KeyListener {
     private Timer timer;
+    Timer blockTimer;
     private int blockFallSpeed = 500;
     private Image[] blockImages = new Image[7];
     private String type;
@@ -47,12 +50,26 @@ public class PanelSetUp extends JPanel implements KeyListener {
         style = doc.addStyle("my style", null); // add a custom style to the doc
         StyleConstants.setFontSize(style, 25); // apply font size to custom style
         add(textPane); // add the panel to the frame
-
+        logic.spawnBlock();
         makeFrame();
         type = generateBlock();
         block = new Block(type);
         isShopOpen = false;
         gameRunning = true;
+        blockTimer = new Timer(500, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                boolean stillMoving = logic.moveBlockDown();
+                if(!stillMoving){
+                    logic.spawnBlock();
+                }
+                repaint();
+            }
+        });
+
+        timer.start();
+
+
     }
 
     public void makeFrame() {
@@ -132,10 +149,19 @@ public class PanelSetUp extends JPanel implements KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawString(String.valueOf(logic.getTime()), 10, 1000);
+        for(int row = 0; row < 17; row++){
+            for(int col = 0; col < 9; col++){
+                if(logic.grid[row][col] != 0){
+                    g.drawImage(block.getImage(), col * 25, row * 25, null);
+                }
+            }
+        }
+        if(logic.getCurrentBlock() != null){
+            g.drawImage(block.getImage(), block.getX(), block.getY(), null);
+        }
         if (block != null) {
             g.drawImage(block.getImage(), block.getX(), block.getY(), null);
         }
-
         // Draw score
         g.drawString("Score: " + logic.getScore(), 10, 10);
 
@@ -150,6 +176,7 @@ public class PanelSetUp extends JPanel implements KeyListener {
             g.drawImage(grid, 200, 20, null);
             g.drawImage(title, 725, 5, null);
         }
+
     }
 
     @Override

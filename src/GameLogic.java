@@ -16,11 +16,9 @@ public class GameLogic implements ActionListener {
     Shop shop;
     Music music;
     BossFight zaif;
-
-
     public static final int WIDTH = 9;
     private static final int HEIGHT = 17;
-    private int[][] grid = new int[HEIGHT][WIDTH];
+    int[][] grid = new int[HEIGHT][WIDTH];
     private Block currentBlock;
     private int score;
 
@@ -52,6 +50,26 @@ public class GameLogic implements ActionListener {
         currentBlock.moveDown();
         return true;  // Block successfully moved down
     }
+
+    public void moveBlockLeft(){
+        if(!isLeftCollision()){
+            currentBlock.setX(currentBlock.getX() - 25);
+        }
+    }
+
+    public void moveBlockRight(){
+        if(!isRightCollision()){
+            currentBlock.setX(currentBlock.getX() + 25);
+        }
+    }
+
+    public void rotateClockwise(){
+        currentBlock.rotateClockwise();
+        if(isCollision(currentBlock.getY())){
+            currentBlock.rotateCounterClockwise();
+        }
+    }
+
 
     public void start() {
         createPlayer();
@@ -170,7 +188,32 @@ public class GameLogic implements ActionListener {
         score += 100;  // Increase score for clearing a row
     }
 
+    private boolean isLeftCollision(){
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++){
+                if(currentBlock.getImage() != null && grid[(currentBlock.getY() + i * 25) / 25][(currentBlock.getX() + j * 25 - 25) / 25] != 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean isRightCollision(){
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++){
+                if(currentBlock.getImage() != null && grid[(currentBlock.getY() + i * 25) / 25][(currentBlock.getX() + j * 25 + 25) / 25] != 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public int getScore(){
         return score;
+    }
+
+    public Block getCurrentBlock(){
+        return currentBlock;
     }
 }
