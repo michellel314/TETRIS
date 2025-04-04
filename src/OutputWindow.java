@@ -17,6 +17,7 @@ public class OutputWindow {
         frame.setSize(2000, 1000); // window size
         frame.setLocation(0, 0); // where on screen window appears
         frame.add(panel);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true); // display the frame on screen
     }
 

@@ -32,6 +32,7 @@ public class PanelSetUp extends JPanel implements KeyListener {
     public Boolean isShopOpen;
     private Shop shop;
     public Boolean gameRunning;
+    private Equipment[] equips;
 
     public PanelSetUp(GameLogic logic, BossFight zaif, Shop shop) {
         addKeyListener(this);
@@ -144,7 +145,15 @@ public class PanelSetUp extends JPanel implements KeyListener {
         }
         if (isShopOpen) {
             g.drawImage(shop.getShop(), 200, 0, null);
-            g.drawImage(shop.getReyvin(), 308, 500, null);
+            g.drawImage(shop.getReyvin(), 700, 300, null);
+            g.setFont(new Font("Ancient", Font.BOLD, 50));
+            g.setColor(Color.pink);
+            g.drawString("Buy something.", 600, 200);
+            g.drawString("Stop wasting my time.", 650, 275);
+            g.drawImage(shop.highheels.getFile(), 300, 640, null);
+            g.drawImage(shop.gun.getFile(), 600, 700, null);
+            g.drawImage(shop.shovel.getFile(), 1000, 700, null);
+            g.drawImage(shop.watch.getFile(), 1200, 600, null);
         }
         if (gameRunning) {
             g.drawImage(grid, 200, 20, null);

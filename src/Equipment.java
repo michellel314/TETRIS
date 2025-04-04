@@ -1,3 +1,4 @@
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class Equipment{
@@ -5,9 +6,9 @@ public class Equipment{
     public Boolean existsInInv;
     String name;
     int score;
-    File file;
+    BufferedImage file;
 
-    public Equipment(File file, String name, int score, Boolean existsInInv) {
+    public Equipment(BufferedImage file, String name, int score, Boolean existsInInv) {
         this.existsInInv = existsInInv;
         this.name = name;
         this.score = score;
@@ -18,7 +19,7 @@ public class Equipment{
         return existsInInv;
     }
 
-    public File getFile(){
+    public BufferedImage getFile(){
         return file;
     }
 
