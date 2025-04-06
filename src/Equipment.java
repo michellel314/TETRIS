@@ -3,7 +3,7 @@ import java.io.File;
 
 public class Equipment{
 
-    public Boolean existsInInv;
+    public boolean existsInInv;
     String name;
     int score;
     BufferedImage file;
@@ -15,7 +15,7 @@ public class Equipment{
         this.file = file;
     }
 
-    public Boolean getExistsInInv() {
+    public boolean getExistsInInv() {
         return existsInInv;
     }
 
