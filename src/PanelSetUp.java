@@ -22,6 +22,8 @@ public class PanelSetUp extends JPanel implements KeyListener {
     public boolean bossFightStarted;
     public Boolean isShopOpen;
     public Boolean gameRunning;
+    private int[] xs;
+    private int[] ys;
     private int blockFallSpeed = 500;
 
     public PanelSetUp(GameLogic logic, Shop shop) throws IOException {
@@ -77,7 +79,7 @@ public class PanelSetUp extends JPanel implements KeyListener {
         if (logic.getTime() == 20) {
             logic.music.stop();
             bossFightStarted = true;
-            //zaif.start();
+            zaif.start();
         }
     }
 
@@ -106,16 +108,37 @@ public class PanelSetUp extends JPanel implements KeyListener {
         }
 
         if (isShopOpen) {
+            xs = new int[]{1100, 1050, 1000};
+            ys = new int[]{300, 300, 380};
             g.drawImage(shop.getShop(), 200, 0, null);
             g.drawImage(shop.getReyvin(), 700, 300, null);
-            g.setFont(new Font("Ancient", Font.BOLD, 50));
-            g.setColor(Color.pink);
-            g.drawString("Buy something.", 600, 200);
-            g.drawString("Stop wasting my time.", 650, 275);
-            g.drawImage(shop.highheels.getFile(), 300, 640, null);
-            g.drawImage(shop.gun.getFile(), 600, 700, null);
-            g.drawImage(shop.shovel.getFile(), 1000, 700, null);
-            g.drawImage(shop.watch.getFile(), 1200, 600, null);
+            g.setColor(Color.white);
+            g.drawOval(610, 130, 600, 200);
+            g.drawPolygon(xs, ys, 3);
+            g.fillPolygon(xs, ys, 3);
+            g.fillOval(610, 130, 600, 200);
+            g.setFont(new Font("Times New Romen", Font.BOLD, 45));
+            g.setColor(Color.magenta);
+
+            if (shop.highheels.getExistsInInv() && shop.shovel.getExistsInInv() && shop.gun.getExistsInInv() && shop.watch.getExistsInInv()) {
+                g.drawString("I got nothing to sell you.", 660, 250);
+            } else {
+                g.drawString("Buy something.", 730, 200);
+                g.drawString("Stop wasting my time.", 680, 275);
+                if (!shop.highheels.getExistsInInv()) {
+                    g.drawImage(shop.highheels.getFile(), 300, 640, null);
+                }
+                if (!shop.shovel.getExistsInInv()) {
+                    g.drawImage(shop.shovel.getFile(), 1000, 700, null);
+                }
+                if (!shop.gun.getExistsInInv()){
+                    g.drawImage(shop.gun.getFile(), 600, 700, null);
+                }
+                if (!shop.watch.getExistsInInv()) {
+                    g.drawImage(shop.watch.getFile(), 1200, 600, null);
+                }
+            }
+
         }
 
         if (gameRunning) {
