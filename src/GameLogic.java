@@ -10,8 +10,8 @@ public class GameLogic implements ActionListener {
     OutputWindow game;
     Timer timer;
     private int time = 0;
-    public static final int WIDTH = 9;
-    public static final int HEIGHT = 17;
+    public static final int WIDTH = 6;
+    public static final int HEIGHT = 21;
     public int[][] grid = new int[HEIGHT][WIDTH];
     private Block currentBlock;
     private int score;
@@ -70,24 +70,98 @@ public class GameLogic implements ActionListener {
     }
 
     public boolean moveBlockDown() {
-      //  int newY = currentBlock.getY() + 25;
-     //   if (newY >= HEIGHT * 25 || grid[newY / 25][currentBlock.getX() / 25] != 0) {
-      ///      placeBlock();
-     //       return false;
-     //   }
-      currentBlock.moveDown();
-       return true;
+        if (!collides(currentBlock, currentBlock.getX(), currentBlock.getY() + 33)) {
+            currentBlock.moveDown();
+            return true;
+        } else {
+            placeBlock();
+            return false;
+        }
+    }
+
+    public boolean collides(Block block, int newX, int newY) {
+        int[][] shape = block.getShapeMatrix();
+        int cols = shape[0].length;
+        int rows = shape.length;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (shape[row][col] == 1) {
+                    int gridX = getGridCol(newX) + col;
+                    int gridY = getGridRow(newY) + row;
+
+                    if (gridY >= HEIGHT || gridX < 0 || gridX >= WIDTH) return true;
+                    if (gridY >= 0 && grid[gridY][gridX] != 0) return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void placeBlock() {
-        int row = currentBlock.getY() / 25;
-        int col = currentBlock.getX() / 25;
-        if (row < HEIGHT && col < WIDTH)
-            grid[row][col] = 1;
+        int[][] shape = currentBlock.getShapeMatrix();
+        int cols = shape[0].length;
+        int rows = shape.length;
+        int startX = getGridCol(currentBlock.getX());
+        int startY = getGridRow(currentBlock.getY());
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (shape[row][col] == 1) {
+                    int gridX = startX + col;
+                    int gridY = startY + row;
+
+                    if (gridX >= 0 && gridX < WIDTH && gridY >= 0 && gridY < HEIGHT) {
+                        grid[gridY][gridX] = 1;
+                        System.out.println("x: " + gridX + "y : " + gridY);
+                    }
+                }
+            }
+        }
 
         clearRows();
         spawnBlock();
     }
+
+    public boolean canMove(int dx, int dy) {
+        int newX = currentBlock.getX() + dx;
+        int newY = currentBlock.getY() + dy;
+
+        int col = getGridCol(newX);
+        int row = getGridRow(newY);
+
+        return (col >= 0 && col < WIDTH && row >= 0 && row < HEIGHT && grid[row][col] == 0);
+    }
+
+    public void rotateBlock() {
+        Block preview = new Block(currentBlock); // copy constructor
+        preview.rotateClockwise();
+
+        if (canRotateTo(preview.getShapeMatrix())) {
+            currentBlock.rotateClockwise();
+        }
+    }
+
+    public boolean canRotateTo(int[][] newMatrix) {
+        int newX = currentBlock.getX();
+        int newY = currentBlock.getY();
+
+        for (int row = 0; row < newMatrix.length; row++) {
+            for (int col = 0; col < newMatrix[0].length; col++) {
+                if (newMatrix[row][col] == 1) {
+                    int gridX = getGridCol(newX) + col;
+                    int gridY = getGridRow(newY) + row;
+
+                    if (gridX < 0 || gridX >= WIDTH || gridY >= HEIGHT)
+                        return false;
+                    if (gridY >= 0 && grid[gridY][gridX] != 0)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     private void clearRows() {
         for (int i = 0; i < HEIGHT; i++) {
@@ -109,6 +183,18 @@ public class GameLogic implements ActionListener {
             grid[0][j] = 0;
         score += 100;
     }
+
+    private int getGridRow(int y){
+        int row =  (y - 20) / 33;
+        return Math.min(row, HEIGHT - 1);
+
+    }
+
+
+    private int getGridCol(int x){
+        return (x - 650) / 33;
+    }
+
 
     public int getTime() { return time; }
     public int getScore() { return score; }

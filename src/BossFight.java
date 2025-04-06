@@ -22,7 +22,7 @@ public class BossFight implements KeyListener, MouseListener {
     }
 
     public void start(){
-        music = new Music("sounds\\BARNEY.wav");
+        music = new Music("sounds/BARNEY.wav");
         music.setFile();
         music.loop();
     }

@@ -58,7 +58,7 @@ public class PanelSetUp extends JPanel implements KeyListener {
 
     private void setupImages() {
         try {
-            grid = ImageIO.read(new File("Visuals/Outline (1).png"));
+            grid = ImageIO.read(new File("Visuals/NEW OUTLINE.png"));
             title = ImageIO.read(new File("Visuals/title  (1).png"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,7 +93,9 @@ public class PanelSetUp extends JPanel implements KeyListener {
         for (int row = 0; row < GameLogic.HEIGHT; row++) {
             for (int col = 0; col < GameLogic.WIDTH; col++) {
                 if (logic.grid[row][col] != 0) {
-                    g.fillRect(col * 25, row * 25, 25, 25);
+                    g.fillRect(650 + col * 33, 20 + row * 33, 33, 33);
+
+
                 }
             }
         }
@@ -131,19 +133,18 @@ public class PanelSetUp extends JPanel implements KeyListener {
                 if (!shop.shovel.getExistsInInv()) {
                     g.drawImage(shop.shovel.getFile(), 1000, 700, null);
                 }
-                if (!shop.gun.getExistsInInv()){
+                if (!shop.gun.getExistsInInv()) {
                     g.drawImage(shop.gun.getFile(), 600, 700, null);
                 }
                 if (!shop.watch.getExistsInInv()) {
                     g.drawImage(shop.watch.getFile(), 1200, 600, null);
                 }
             }
-
         }
 
         if (gameRunning) {
-            g.drawImage(grid, 200, 20, null);
-            g.drawImage(title, 725, 5, null);
+            g.drawImage(grid, 650, 20, null);
+            g.drawImage(title, 725, 0, null);
         }
     }
 
@@ -153,12 +154,21 @@ public class PanelSetUp extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        Block current = logic.getCurrentBlock();
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_UP) current.rotateClockwise();
-        if (key == KeyEvent.VK_DOWN) current.moveDown();
-        if (key == KeyEvent.VK_LEFT) current.moveLeft();
-        if (key == KeyEvent.VK_RIGHT) current.moveRight();
-        repaint();
+        if (gameRunning && !isShopOpen) {
+            Block current = logic.getCurrentBlock();
+            int key = e.getKeyCode();
+
+            if (key == KeyEvent.VK_LEFT && logic.canMove(-33, 0)) {
+                current.moveLeft();
+            } else if (key == KeyEvent.VK_RIGHT && logic.canMove(33, 0)) {
+                current.moveRight();
+            } else if (key == KeyEvent.VK_DOWN) {
+                logic.moveBlockDown(); // move down and place if necessary
+            } else if (key == KeyEvent.VK_UP) {
+                logic.rotateBlock();   // 🔁 use your new method!
+            }
+
+            repaint();
     }
+}
 }
