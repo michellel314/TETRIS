@@ -28,4 +28,7 @@ public class Equipment{
         return "you used " + name;
     }
 
+    public int getScore() {
+        return score;
+    }
 }

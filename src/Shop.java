@@ -18,8 +18,9 @@ public class Shop implements KeyListener, MouseListener {
     public ReyvinsStiffShovel shovel;
     private BufferedImage shop;
     private BufferedImage reyvin;
+    private Player player;
 
-    public Shop() {
+    public Shop(Player player) {
         try {
             highheels = new ReyvinsGirlyPopHighHeels(ImageIO.read(new File("Visuals/HighHeels.png")),"Reyvin's Girly-Pop High Heels", 50, false, 50);
             watch = new ReyvinsPulsingRewindWatch(ImageIO.read(new File("Visuals/Watch.png")), "Reyvin's Pulsing Rewind Watch", 75, false, 1);
@@ -28,6 +29,7 @@ public class Shop implements KeyListener, MouseListener {
 
             shop = ImageIO.read(new File("Visuals/ShopBackground.png"));
             reyvin = ImageIO.read(new File("Visuals/Reyvin.png"));
+            this.player = player;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -39,6 +41,27 @@ public class Shop implements KeyListener, MouseListener {
     }
     public BufferedImage getReyvin(){
         return reyvin;
+    }
+
+    public void buyShovel() {
+        player.setScore(player.getScore() - shovel.getScore());
+        shovel.existsInInv = true;
+        player.addToInventory(shovel);
+    }
+    public void buyGun() {
+        player.setScore(player.getScore() - gun.getScore());
+        gun.existsInInv = true;
+        player.addToInventory(gun);
+    }
+    public void buyHeels() {
+        player.setScore(player.getScore() - highheels.getScore());
+        highheels.existsInInv = true;
+        player.addToInventory(highheels);
+    }
+    public void buyWatch() {
+        player.setScore(player.getScore() - watch.getScore());
+        watch.existsInInv = true;
+        player.addToInventory(watch);
     }
 
     public void openShop(){

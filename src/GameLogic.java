@@ -21,8 +21,8 @@ public class GameLogic implements ActionListener {
     BossFight zaif;
 
     public GameLogic() throws IOException {
-        shop = new Shop();
         spawnBlock();
+        shop = new Shop(player);
         panel = new PanelSetUp(this, shop);
         scan = new Scanner(System.in);
         timer = new Timer(1000, this);

@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class PanelSetUp extends JPanel implements KeyListener {
+public class PanelSetUp extends JPanel implements KeyListener, ActionListener{
     private Timer blockTimer;
     private Image[] blockImages = new Image[7];
     private Block block;
@@ -25,8 +25,9 @@ public class PanelSetUp extends JPanel implements KeyListener {
     private int[] xs;
     private int[] ys;
     private int blockFallSpeed = 500;
+    private Button button;
 
-    public PanelSetUp(GameLogic logic, Shop shop) throws IOException {
+    public PanelSetUp(GameLogic logic, Shop shop) throws IOException{
         this.logic = logic;
         this.zaif = new BossFight(this);
         this.shop = shop;
@@ -38,6 +39,10 @@ public class PanelSetUp extends JPanel implements KeyListener {
         gameRunning = true;
         isShopOpen = false;
         bossFightStarted = false;
+        button = new Button("Close Shop");
+        button.addActionListener(this);
+        add(button);
+        button.setVisible(false);
 
         blockTimer = new Timer(blockFallSpeed, e -> {
             boolean moving = logic.moveBlockDown();
@@ -74,8 +79,10 @@ public class PanelSetUp extends JPanel implements KeyListener {
 
     public void updateTimer() throws IOException {
         repaint();
-        if (logic.getTime() == 5) logic.openShop();
-        if (logic.getTime() == 15) logic.closeShop();
+        if (logic.getTime() == 5) {
+            button.setVisible(true);
+            logic.openShop();
+        }
         if (logic.getTime() == 20) {
             logic.music.stop();
             bossFightStarted = true;
@@ -108,6 +115,7 @@ public class PanelSetUp extends JPanel implements KeyListener {
         }
 
         if (isShopOpen) {
+
             xs = new int[]{1100, 1050, 1000};
             ys = new int[]{300, 300, 380};
             g.drawImage(shop.getShop(), 200, 0, null);
@@ -117,7 +125,7 @@ public class PanelSetUp extends JPanel implements KeyListener {
             g.drawPolygon(xs, ys, 3);
             g.fillPolygon(xs, ys, 3);
             g.fillOval(610, 130, 600, 200);
-            g.setFont(new Font("Times New Romen", Font.BOLD, 45));
+            g.setFont(new Font("Times New Roman", Font.BOLD, 45));
             g.setColor(Color.magenta);
 
             if (shop.highheels.getExistsInInv() && shop.shovel.getExistsInInv() && shop.gun.getExistsInInv() && shop.watch.getExistsInInv()) {
@@ -138,7 +146,8 @@ public class PanelSetUp extends JPanel implements KeyListener {
                     g.drawImage(shop.watch.getFile(), 1200, 600, null);
                 }
             }
-
+            button.setVisible(true);
+            button.setLocation(1000, 100);
         }
 
         if (gameRunning) {
@@ -160,5 +169,11 @@ public class PanelSetUp extends JPanel implements KeyListener {
         if (key == KeyEvent.VK_LEFT) current.moveLeft();
         if (key == KeyEvent.VK_RIGHT) current.moveRight();
         repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        logic.closeShop();
+        button.setVisible(false);
     }
 }
