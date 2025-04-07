@@ -33,17 +33,15 @@ public class GameLogic implements ActionListener {
                 grid[i][j] = 0;
     }
 
+    public int getTime() { return time; }
+    public int getScore() { return score; }
+    public Block getCurrentBlock() { return currentBlock; }
+
     public void start() {
         createPlayer();
         timer.start();
         music.setFile();
         game = new OutputWindow("Tetris", this, panel);
-    }
-
-    private void createPlayer() {
-        System.out.print("Enter your name: ");
-        String name = scan.nextLine();
-        player = new Player(name, 0);
     }
 
     public void spawnBlock() {
@@ -99,45 +97,6 @@ public class GameLogic implements ActionListener {
         return false;
     }
 
-    private void placeBlock() {
-        int[][] shape = currentBlock.getShapeMatrix();
-        int cols = shape[0].length;
-        int rows = shape.length;
-        int startX = currentBlock.getGridCol(currentBlock.getX());
-        int startY = currentBlock.getGridRow(currentBlock.getY());
-        String color = currentBlock.getColor();
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                if (shape[row][col] == 1) {
-
-                    int gridX = startX + col;
-                    int gridY = startY + row;
-
-                    if (gridX >= 0 && gridX < WIDTH && gridY >= 0 && gridY < HEIGHT) {
-                        if(color.equals("blue")){
-                            grid[gridY][gridX] = 1;
-                        } else if (color.equals("cyan")){
-                            grid[gridY][gridX] = 2;
-                        } else if (color.equals("green")){
-                            grid[gridY][gridX] = 3;
-                        } else if (color.equals("orange")){
-                            grid[gridY][gridX] = 4;
-                        } else if(color.equals("purple")){
-                            grid[gridY][gridX] = 5;
-                        } else if (color.equals("red")){
-                            grid[gridY][gridX] = 6;
-                        } else if (color.equals("yellow")){
-                            grid[gridY][gridX] = 7;
-                        }
-                    }
-                }
-            }
-        }
-
-        clearRows();
-        spawnBlock();
-    }
-
     public boolean canMove(int dx, int dy) {
         int newX = currentBlock.getX() + dx;
         int newY = currentBlock.getY() + dy;
@@ -177,6 +136,71 @@ public class GameLogic implements ActionListener {
         return true;
     }
 
+    public void openShop() {
+        panel.gameRunning = false;
+        panel.isShopOpen = true;
+        shop.openShop();
+    }
+
+    public void closeShop() {
+        panel.isShopOpen = false;
+        panel.gameRunning = true;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        time++;
+        try {
+            panel.updateTimer();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void createPlayer() {
+        System.out.print("Enter your name: ");
+        String name = scan.nextLine();
+        player = new Player(name, 0);
+    }
+
+    private void placeBlock() {
+        int[][] shape = currentBlock.getShapeMatrix();
+        int cols = shape[0].length;
+        int rows = shape.length;
+        int startX = currentBlock.getGridCol(currentBlock.getX());
+        int startY = currentBlock.getGridRow(currentBlock.getY());
+        String color = currentBlock.getColor();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (shape[row][col] == 1) {
+
+                    int gridX = startX + col;
+                    int gridY = startY + row;
+
+                    if (gridX >= 0 && gridX < WIDTH && gridY >= 0 && gridY < HEIGHT) {
+                        if(color.equals("blue")){
+                            grid[gridY][gridX] = 1;
+                        } else if (color.equals("cyan")){
+                            grid[gridY][gridX] = 2;
+                        } else if (color.equals("green")){
+                            grid[gridY][gridX] = 3;
+                        } else if (color.equals("orange")){
+                            grid[gridY][gridX] = 4;
+                        } else if(color.equals("purple")){
+                            grid[gridY][gridX] = 5;
+                        } else if (color.equals("red")){
+                            grid[gridY][gridX] = 6;
+                        } else if (color.equals("yellow")){
+                            grid[gridY][gridX] = 7;
+                        }
+                    }
+                }
+            }
+        }
+
+        clearRows();
+        spawnBlock();
+    }
 
     private void clearRows() {
         for (int i = 0; i < HEIGHT; i++) {
@@ -199,29 +223,4 @@ public class GameLogic implements ActionListener {
         score += 100;
     }
 
-    public int getTime() { return time; }
-    public int getScore() { return score; }
-    public Block getCurrentBlock() { return currentBlock; }
-
-
-    public void openShop() {
-        panel.gameRunning = false;
-        panel.isShopOpen = true;
-        shop.openShop();
-    }
-
-    public void closeShop() {
-        panel.isShopOpen = false;
-        panel.gameRunning = true;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        time++;
-        try {
-            panel.updateTimer();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
 }

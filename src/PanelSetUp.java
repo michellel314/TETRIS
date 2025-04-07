@@ -49,24 +49,6 @@ public class PanelSetUp extends JPanel implements KeyListener, ActionListener {
         blockTimer.start();
     }
 
-    private void setupTextPane() {
-        textPane = new JTextPane();
-        textPane.setEditable(false);
-        doc = textPane.getStyledDocument();
-        style = doc.addStyle("my style", null);
-        StyleConstants.setFontSize(style, 25);
-        add(textPane);
-    }
-
-    private void setupImages() {
-        try {
-            grid = ImageIO.read(getClass().getResource("Visuals/NEW OUTLINE.png"));
-            title = ImageIO.read(getClass().getResource("Visuals/title  (1).png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void updateTimer() throws IOException {
         repaint();
         if (logic.getTime() == 5) {
@@ -185,12 +167,31 @@ public class PanelSetUp extends JPanel implements KeyListener, ActionListener {
             }
 
             repaint();
+        }
     }
-}
 
     @Override
     public void actionPerformed(ActionEvent e) {
         logic.closeShop();
         button.setVisible(false);
     }
+
+    private void setupTextPane() {
+        textPane = new JTextPane();
+        textPane.setEditable(false);
+        doc = textPane.getStyledDocument();
+        style = doc.addStyle("my style", null);
+        StyleConstants.setFontSize(style, 25);
+        add(textPane);
+    }
+
+    private void setupImages() {
+        try {
+            grid = ImageIO.read(getClass().getResource("Visuals/NEW OUTLINE.png"));
+            title = ImageIO.read(getClass().getResource("Visuals/title  (1).png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

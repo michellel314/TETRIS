@@ -169,13 +169,42 @@ public class Block {
         return color;
     }
 
-    public int getX() { return x; }
-    public int getY() { return y; }
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public boolean getCanRotate(){
         return canRotate;
     }
-    public void setX(int newX) { x = newX; }
-    public void setY(int newY) { y = newY; }
+
+    public int getGridRow(int y){
+        int row =  (y - 20) / 33;
+        return row;
+    }
+
+    public int getGridCol(int x){
+        return (x - 650) / 33;
+    }
+
+    public Image getImage() {
+        return blockSprites[currentRotation];
+    }
+
+    public int[][] getShapeMatrix() {
+        return shapeMatrices.get(currentRotation);
+    }
+
+    public void setX(int newX) {
+        x = newX;
+    }
+
+    public void setY(int newY) {
+        y = newY;
+    }
 
     public void rotateClockwise() {
         if (canRotate) {
@@ -206,6 +235,7 @@ public class Block {
         }
         y += 33;
     }
+
     public void moveLeft() {
         int[][] shape = this.getShapeMatrix();
         int cols = shape[0].length;
@@ -225,6 +255,7 @@ public class Block {
         }
         x -= 33;
     }
+
     public void moveRight() {
         int[][] shape = this.getShapeMatrix();
         int cols = shape[0].length;
@@ -245,22 +276,4 @@ public class Block {
         x += 33;
     }
 
-    public int getGridRow(int y){
-        int row =  (y - 20) / 33;
-        //return Math.min(row, GameLogic.HEIGHT - 1);
-        return row;
-    }
-
-
-    public int getGridCol(int x){
-        return (x - 650) / 33;
-    }
-
-    public Image getImage() {
-        return blockSprites[currentRotation];
-    }
-
-    public int[][] getShapeMatrix() {
-        return shapeMatrices.get(currentRotation);
-    }
 }
