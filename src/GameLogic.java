@@ -203,6 +203,7 @@ public class GameLogic implements ActionListener {
     }
 
     private void clearRows() {
+        int numberOfLinesJustCleared = 0;
         for (int i = 0; i < HEIGHT; i++) {
             boolean full = true;
             for (int j = 0; j < WIDTH; j++) {
@@ -211,7 +212,9 @@ public class GameLogic implements ActionListener {
                     break;
                 }
             }
-            if (full) clearRow(i);
+            if (full) {
+                clearRow(i);
+            }
         }
     }
 
@@ -221,6 +224,7 @@ public class GameLogic implements ActionListener {
         for (int j = 0; j < WIDTH; j++)
             grid[0][j] = 0;
         score += 100;
+
     }
 
 }
