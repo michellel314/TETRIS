@@ -37,4 +37,8 @@ public class Player {
     public void setScore(int newScore){
         score = newScore;
     }
+
+    public Equipment pickRandomFromInventory(){
+        return inventory[(int) (Math.random() * 3)];
+    }
 }

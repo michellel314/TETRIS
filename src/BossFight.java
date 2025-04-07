@@ -22,6 +22,10 @@ public class BossFight implements KeyListener, MouseListener {
     }
 
     public void start(){
+        for (int i = 0; i < GameLogic.HEIGHT; i++)
+            for (int j = 0; j < GameLogic.WIDTH; j++)
+                panel.logic.grid[i][j] = 0;
+        panel.blockTimer.setDelay(100);
         music = new Music("sounds/BARNEY.wav");
         music.setFile();
         music.loop();

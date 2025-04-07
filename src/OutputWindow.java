@@ -17,9 +17,9 @@ public class OutputWindow extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // causes program to end when window is X'd out
         setSize(2000, 1000); // window size
         setLocation(0, 0); // where on screen window appears
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setResizable(false);
         setVisible(true); // display the frame on screen
+        setBackground(Color.WHITE);
     }
 
 }

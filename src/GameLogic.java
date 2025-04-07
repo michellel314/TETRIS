@@ -5,7 +5,7 @@ import java.util.Scanner;
 import javax.swing.Timer;
 
 public class GameLogic implements ActionListener {
-    private Player player;
+    public Player player;
     private Scanner scan;
     OutputWindow game;
     Timer timer;
@@ -22,8 +22,9 @@ public class GameLogic implements ActionListener {
 
     public GameLogic() throws IOException {
         spawnBlock();
-        shop = new Shop(player);
+        shop = new Shop(player, panel);
         panel = new PanelSetUp(this, shop);
+        shop.setPanel(panel);
         scan = new Scanner(System.in);
         timer = new Timer(1000, this);
         music = new Music("sounds/MAINSONG.wav");
@@ -138,13 +139,21 @@ public class GameLogic implements ActionListener {
 
     public void openShop() {
         panel.gameRunning = false;
+        panel.blockTimer.stop();
+        panel.buyWatch.setLocation(1200, 600);
+        panel.buyHeels.setLocation(300, 640);
+        panel.buyGun.setLocation(600, 700);
+        panel.buyShovel.setLocation(1000, 700);
+        panel.button.setLocation(1600, 950);
         panel.isShopOpen = true;
         shop.openShop();
     }
 
     public void closeShop() {
         panel.isShopOpen = false;
+        panel.blockTimer.start();
         panel.gameRunning = true;
+
     }
 
     @Override
@@ -224,7 +233,7 @@ public class GameLogic implements ActionListener {
         for (int j = 0; j < WIDTH; j++)
             grid[0][j] = 0;
         score += 100;
-
+        player.addScore(100);
     }
 
 }

@@ -1,32 +1,67 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Shop implements KeyListener, MouseListener {
+public class Shop implements KeyListener, MouseListener , ActionListener{
 
 
     public ReyvinsGirlyPopHighHeels highheels;
     public ReyvinsPulsingRewindWatch watch;
     public ReyvinsQuirkyStunGun gun;
     public ReyvinsStiffShovel shovel;
+    public ActionListener button;
     private BufferedImage shop;
     private BufferedImage reyvin;
     private Player player;
+    private PanelSetUp panel;
 
-    public Shop(Player player) {
+    public Shop(Player player, PanelSetUp panel) {
+        this.panel = panel;
+        makeEquipment();
+    }
+
+    public void makeEquipment(){
         try {
-            highheels = new ReyvinsGirlyPopHighHeels(ImageIO.read(getClass().getResource("Visuals/HighHeels.png")),"Reyvin's Girly-Pop High Heels", 50, false, 50);
-            watch = new ReyvinsPulsingRewindWatch(ImageIO.read(getClass().getResource("Visuals/Watch.png")), "Reyvin's Pulsing Rewind Watch", 75, false, 1);
-            gun = new ReyvinsQuirkyStunGun(ImageIO.read(getClass().getResource("Visuals/Gun.png")), "Reyvin's Quirky Stun Gun", 80, false, 5);
-            shovel = new ReyvinsStiffShovel(ImageIO.read(getClass().getResource("Visuals/Shovel.png")), "Reyvin's Stiff Shovel", 50, false, 1);
-
+            highheels = new ReyvinsGirlyPopHighHeels(ImageIO.read(getClass().getResource("Visuals/HighHeels.png")), "Reyvin's Girly-Pop High Heels", 50, false, 50, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    panel.watchClicked = false;
+                    panel.gunClicked = false;
+                    panel.shovelClicked = false;
+                    panel.heelsClicked = true;
+                }
+            });
+            watch = new ReyvinsPulsingRewindWatch(ImageIO.read(getClass().getResource("Visuals/Watch.png")), "Reyvin's Pulsing Rewind Watch", 75, false, 1, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    panel.gunClicked = false;
+                    panel.shovelClicked = false;
+                    panel.heelsClicked = false;
+                    panel.watchClicked = true;
+                }
+            });
+            gun = new ReyvinsQuirkyStunGun(ImageIO.read(getClass().getResource("Visuals/Gun.png")), "Reyvin's Quirky Stun Gun", 80, false, 5, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    panel.shovelClicked = false;
+                    panel.heelsClicked = false;
+                    panel.watchClicked = false;
+                    panel.gunClicked = true;
+                }
+            });
+            shovel = new ReyvinsStiffShovel(ImageIO.read(getClass().getResource("Visuals/Shovel.png")), "Reyvin's Stiff Shovel", 50, false, 1, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    panel.heelsClicked = false;
+                    panel.watchClicked = false;
+                    panel.gunClicked = false;
+                    panel.shovelClicked = true;
+                }
+            });
             shop = ImageIO.read(getClass().getResource("Visuals/ShopBackground.png"));
             reyvin = ImageIO.read(getClass().getResource("Visuals/Reyvin.png"));
             this.player = player;
@@ -34,12 +69,15 @@ public class Shop implements KeyListener, MouseListener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public BufferedImage getShop() {
         return shop;
     }
+    public void setPanel(PanelSetUp panel){
+        this.panel = panel;
+    }
+
     public BufferedImage getReyvin(){
         return reyvin;
     }
@@ -106,5 +144,11 @@ public class Shop implements KeyListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        panel.logic.closeShop();
+        panel.button.setVisible(false);
     }
 }
