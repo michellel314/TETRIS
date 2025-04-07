@@ -37,7 +37,7 @@ public class BossFight implements KeyListener, MouseListener {
     }
 
     public void makeImage() throws IOException {
-        zaif = ImageIO.read(new File("Visuals/ZAIFBOSSFIGHT.png"));
+        zaif = ImageIO.read(getClass().getResource("Visuals/ZAIFBOSSFIGHT.png"));
     }
 
     @Override

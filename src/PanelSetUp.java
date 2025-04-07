@@ -58,8 +58,8 @@ public class PanelSetUp extends JPanel implements KeyListener {
 
     private void setupImages() {
         try {
-            grid = ImageIO.read(new File("Visuals/NEW OUTLINE.png"));
-            title = ImageIO.read(new File("Visuals/title  (1).png"));
+            grid = ImageIO.read(getClass().getResource("Visuals/NEW OUTLINE.png"));
+            title = ImageIO.read(getClass().getResource("Visuals/title  (1).png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +71,7 @@ public class PanelSetUp extends JPanel implements KeyListener {
                 String fileName = "Visuals/" + blockTypes[i] + "(" + j + ").png";
                 int index = getBlockImageIndex(i, j);
                 try {
-                    blockImages[index] = new ImageIcon(fileName).getImage();
+                    blockImages[index] = new ImageIcon(getClass().getResource(fileName)).getImage();
                 } catch (Exception e) {
                     System.err.println("Image not found: " + fileName);
                 }

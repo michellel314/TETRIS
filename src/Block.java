@@ -16,7 +16,7 @@ public class Block {
         this.y = 10;
         shapeMatrices = new ArrayList<>();
         if (blockType.equals("A")) {
-            blockSprites = new Image[]{new ImageIcon("Visuals/YellowBlock(1).png").getImage()};
+            blockSprites = new Image[]{new ImageIcon(getClass().getResource("Visuals/YellowBlock(1).png")).getImage()};
             shapeMatrices.add(new int[][]{
                 {1, 1},
                 {1, 1}
@@ -24,10 +24,10 @@ public class Block {
             canRotate = false;
         } else if (blockType.equals("B")) {
             blockSprites = new Image[]{
-                    new ImageIcon("Visuals/BlueBlock(1).png").getImage(),
-                    new ImageIcon("Visuals/BlueBlock(2).png").getImage(),
-                    new ImageIcon("Visuals/BlueBlock(3).png").getImage(),
-                    new ImageIcon("Visuals/BlueBlock(4).png").getImage()
+                    new ImageIcon(getClass().getResource("Visuals/BlueBlock(1).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/BlueBlock(2).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/BlueBlock(3).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/BlueBlock(4).png")).getImage()
             };
             shapeMatrices.add(new int[][]{
                     {1, 0, 0},
@@ -50,8 +50,8 @@ public class Block {
             canRotate = true;
         } else if (blockType.equals("C")) {
             blockSprites = new Image[]{
-                    new ImageIcon("Visuals/CyanBlock(1).png").getImage(),
-                    new ImageIcon("Visuals/CyanBlock(2).png").getImage()
+                    new ImageIcon(getClass().getResource("Visuals/CyanBlock(1).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/CyanBlock(2).png")).getImage()
             };
             shapeMatrices.add(new int[][]{
                     {1, 1, 1, 1}
@@ -65,8 +65,8 @@ public class Block {
             canRotate = true;
         } else if (blockType.equals("D")) {
             blockSprites = new Image[]{
-                    new ImageIcon("Visuals/GreenBlock(1).png").getImage(),
-                    new ImageIcon("Visuals/GreenBlock(2).png").getImage()
+                    new ImageIcon(getClass().getResource("Visuals/GreenBlock(1).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/GreenBlock(2).png")).getImage()
             };
             shapeMatrices.add(new int[][]{
                     {0, 1, 1},
@@ -80,8 +80,8 @@ public class Block {
             canRotate = true;
         } else if (blockType.equals("E")) {
             blockSprites = new Image[]{
-                    new ImageIcon("Visuals/OrangeBlock(1).png").getImage(),
-                    new ImageIcon("Visuals/OrangeBlock(2).png").getImage()
+                    new ImageIcon(getClass().getResource("Visuals/OrangeBlock(1).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/OrangeBlock(2).png")).getImage()
             };
             shapeMatrices.add(new int[][]{
                     {1, 1, 0},
@@ -95,10 +95,10 @@ public class Block {
             canRotate = true;
         } else if (blockType.equals("F")) {
             blockSprites = new Image[]{
-                    new ImageIcon("Visuals/PurpleBlock(1).png").getImage(),
-                    new ImageIcon("Visuals/PurpleBlock(2).png").getImage(),
-                    new ImageIcon("Visuals/PurpleBlock(3).png").getImage(),
-                    new ImageIcon("Visuals/PurpleBlock(4).png").getImage()
+                    new ImageIcon(getClass().getResource("Visuals/PurpleBlock(1).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/PurpleBlock(2).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/PurpleBlock(3).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/PurpleBlock(4).png")).getImage()
             };
             shapeMatrices.add(new int[][]{
                     {0, 1, 0},
@@ -121,10 +121,10 @@ public class Block {
             canRotate = true;
         } else if (blockType.equals("G")) {
             blockSprites = new Image[]{
-                    new ImageIcon("Visuals/RedBlock(1).png").getImage(),
-                    new ImageIcon("Visuals/RedBlock(2).png").getImage(),
-                    new ImageIcon("Visuals/RedBlock(3).png").getImage(),
-                    new ImageIcon("Visuals/RedBlock(4).png").getImage()
+                    new ImageIcon(getClass().getResource("Visuals/RedBlock(1).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/RedBlock(2).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/RedBlock(3).png")).getImage(),
+                    new ImageIcon(getClass().getResource("Visuals/RedBlock(4).png")).getImage()
             };
             shapeMatrices.add(new int[][]{
                     {1, 1},
@@ -178,7 +178,23 @@ public class Block {
         }
     }
 
-    public void moveDown() { y += 33; }
+    public void moveDown() {
+        int[][] shape = this.getShapeMatrix();
+        int cols = shape[0].length;
+        int rows = shape.length;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (shape[row][col] == 1) {
+                    int gridY = getGridRow(y);
+                    if (gridY >= 21){
+                        return;
+                    }
+                }
+            }
+        }
+        y += 33;
+    }
     public void moveLeft() {
         int[][] shape = this.getShapeMatrix();
         int cols = shape[0].length;
