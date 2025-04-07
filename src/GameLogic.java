@@ -10,7 +10,7 @@ public class GameLogic implements ActionListener {
     OutputWindow game;
     Timer timer;
     private int time = 0;
-    public static final int WIDTH = 6;
+    public static final int WIDTH = 16;
     public static final int HEIGHT = 21;
     public int[][] grid = new int[HEIGHT][WIDTH];
     private Block currentBlock;
@@ -87,10 +87,11 @@ public class GameLogic implements ActionListener {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (shape[row][col] == 1) {
+
                     int gridX = getGridCol(newX) + col;
                     int gridY = getGridRow(newY) + row;
 
-                    if (gridY >= HEIGHT || gridX < 0 || gridX >= WIDTH) return true;
+                    if (gridY >= HEIGHT) return true;
                     if (gridY >= 0 && grid[gridY][gridX] != 0) return true;
                 }
             }
@@ -113,7 +114,6 @@ public class GameLogic implements ActionListener {
 
                     if (gridX >= 0 && gridX < WIDTH && gridY >= 0 && gridY < HEIGHT) {
                         grid[gridY][gridX] = 1;
-                        System.out.println("x: " + gridX + "y : " + gridY);
                     }
                 }
             }
@@ -184,9 +184,10 @@ public class GameLogic implements ActionListener {
         score += 100;
     }
 
+
     private int getGridRow(int y){
         int row =  (y - 20) / 33;
-        return Math.min(row, HEIGHT - 1);
+        return Math.min(row, GameLogic.HEIGHT - 1);
 
     }
 
@@ -194,7 +195,6 @@ public class GameLogic implements ActionListener {
     private int getGridCol(int x){
         return (x - 650) / 33;
     }
-
 
     public int getTime() { return time; }
     public int getScore() { return score; }

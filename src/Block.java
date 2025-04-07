@@ -1,6 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
 import java.util.ArrayList;
+
+
 public class Block {
     private Image[] blockSprites;
     private ArrayList<int[][]> shapeMatrices;
@@ -14,7 +16,7 @@ public class Block {
         this.y = 10;
         shapeMatrices = new ArrayList<>();
         if (blockType.equals("A")) {
-            blockSprites = new Image[]{new ImageIcon("Visuals/Yellow Block.png").getImage()};
+            blockSprites = new Image[]{new ImageIcon("Visuals/YellowBlock(1).png").getImage()};
             shapeMatrices.add(new int[][]{
                 {1, 1},
                 {1, 1}
@@ -78,8 +80,8 @@ public class Block {
             canRotate = true;
         } else if (blockType.equals("E")) {
             blockSprites = new Image[]{
-                    new ImageIcon("Visuals/Orange Block(1).png").getImage(),
-                    new ImageIcon("Visuals/Orange Block(2).png").getImage()
+                    new ImageIcon("Visuals/OrangeBlock(1).png").getImage(),
+                    new ImageIcon("Visuals/OrangeBlock(2).png").getImage()
             };
             shapeMatrices.add(new int[][]{
                     {1, 1, 0},
@@ -119,10 +121,10 @@ public class Block {
             canRotate = true;
         } else if (blockType.equals("G")) {
             blockSprites = new Image[]{
-                    new ImageIcon("Visuals/Red Block(1).png").getImage(),
-                    new ImageIcon("Visuals/Red Block(2).png").getImage(),
-                    new ImageIcon("Visuals/Red Block(3).png").getImage(),
-                    new ImageIcon("Visuals/Red Block(4).png").getImage()
+                    new ImageIcon("Visuals/RedBlock(1).png").getImage(),
+                    new ImageIcon("Visuals/RedBlock(2).png").getImage(),
+                    new ImageIcon("Visuals/RedBlock(3).png").getImage(),
+                    new ImageIcon("Visuals/RedBlock(4).png").getImage()
             };
             shapeMatrices.add(new int[][]{
                     {1, 1},
@@ -177,8 +179,55 @@ public class Block {
     }
 
     public void moveDown() { y += 33; }
-    public void moveLeft() { x -= 33; }
-    public void moveRight() { x += 33; }
+    public void moveLeft() {
+        int[][] shape = this.getShapeMatrix();
+        int cols = shape[0].length;
+        int rows = shape.length;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (shape[row][col] == 1) {
+
+                    int gridX = getGridCol(x) + col;
+                    if (gridX == 15) {
+                        return;
+                    }
+
+                }
+            }
+        }
+        x -= 33;
+    }
+    public void moveRight() {
+        int[][] shape = this.getShapeMatrix();
+        int cols = shape[0].length;
+        int rows = shape.length;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (shape[row][col] == 1) {
+
+                    int gridX = getGridCol(x) + col;
+                    if (gridX == 15) {
+                        return;
+                    }
+
+                }
+            }
+        }
+        x += 33;
+    }
+
+    private int getGridRow(int y){
+        int row =  (y - 20) / 33;
+        return Math.min(row, GameLogic.HEIGHT - 1);
+
+    }
+
+
+    private int getGridCol(int x){
+        return (x - 650) / 33;
+    }
 
     public Image getImage() {
         return blockSprites[currentRotation];
