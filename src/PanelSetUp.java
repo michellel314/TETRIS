@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 
 public class PanelSetUp extends JPanel implements KeyListener {
     private Timer blockTimer;
-    private Image[] blockImages = new Image[7];
     private BufferedImage grid, title;
     private StyledDocument doc;
     private Style style;
@@ -24,15 +23,12 @@ public class PanelSetUp extends JPanel implements KeyListener {
     private int[] xs;
     private int[] ys;
     private int blockFallSpeed = 500;
-    private String[] blockTypes = {"BlueBlock", "CyanBlock", "GreenBlock", "OrangeBlock", "PurpleBlock", "RedBlock", "YellowBlock"};
-    private int[] blockVariations = {4, 2, 2, 2, 4, 4, 1};
     public PanelSetUp(GameLogic logic, Shop shop) throws IOException {
         this.logic = logic;
         this.zaif = new BossFight(this);
         this.shop = shop;
         setFocusable(true);
         addKeyListener(this);
-        loadBlockImages();
         setupTextPane();
         setupImages();
         gameRunning = true;
@@ -65,29 +61,6 @@ public class PanelSetUp extends JPanel implements KeyListener {
         }
     }
 
-    private void loadBlockImages() {
-        for (int i = 0; i < blockTypes.length; i++) {
-            for (int j = 1; j <= blockVariations[i]; j++) {
-                String fileName = "Visuals/" + blockTypes[i] + "(" + j + ").png";
-                int index = getBlockImageIndex(i, j);
-                try {
-                    blockImages[index] = new ImageIcon(getClass().getResource(fileName)).getImage();
-                } catch (Exception e) {
-                    System.err.println("Image not found: " + fileName);
-                }
-            }
-        }
-    }
-
-    private int getBlockImageIndex(int blockTypeIndex, int variationIndex) {
-        int index = 0;
-        for (int i = 0; i < blockTypeIndex; i++) {
-            index += blockVariations[i];
-        }
-        index += variationIndex - 1;
-        return index;
-    }
-
     public void updateTimer() throws IOException {
         repaint();
         if (logic.getTime() == 5) logic.openShop();
@@ -108,11 +81,27 @@ public class PanelSetUp extends JPanel implements KeyListener {
         // Draw placed blocks
         for (int row = 0; row < GameLogic.HEIGHT; row++) {
             for (int col = 0; col < GameLogic.WIDTH; col++) {
-                if (logic.grid[row][col] != 0) {
+                if (logic.grid[row][col] == 1) {
+                    g.setColor(Color.decode(Colors.BLUE));
+                } else if (logic.grid[row][col] == 2){
+                    g.setColor(Color.decode(Colors.CYAN));
+                } else if(logic.grid[row][col] == 3){
+                    g.setColor(Color.decode(Colors.GREEN));
+                } else if(logic.grid[row][col] == 4){
+                    g.setColor(Color.decode(Colors.ORANGE));
+                } else if (logic.grid[row][col] == 5){
+                    g.setColor(Color.decode(Colors.PURPLE));
+                } else if(logic.grid[row][col] == 6){
+                    g.setColor(Color.decode(Colors.RED));
                     g.fillRect(650 + col * 33, 20 + row * 33, 33, 33);
-
-
+                } else if(logic.grid[row][col] == 7){
+                    g.setColor(Color.decode(Colors.YELLOW));
                 }
+
+                if(logic.grid[row][col] != 0){
+                    g.fillRect(650 + col * 33, 20 + row * 33, 33, 33);
+                }
+
             }
         }
 

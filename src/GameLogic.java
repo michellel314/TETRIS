@@ -88,8 +88,8 @@ public class GameLogic implements ActionListener {
             for (int col = 0; col < cols; col++) {
                 if (shape[row][col] == 1) {
 
-                    int gridX = getGridCol(newX) + col;
-                    int gridY = getGridRow(newY) + row;
+                    int gridX = currentBlock.getGridCol(newX) + col;
+                    int gridY = currentBlock.getGridRow(newY) + row;
 
                     if (gridY >= HEIGHT) return true;
                     if (gridY >= 0 && grid[gridY][gridX] != 0) return true;
@@ -103,17 +103,32 @@ public class GameLogic implements ActionListener {
         int[][] shape = currentBlock.getShapeMatrix();
         int cols = shape[0].length;
         int rows = shape.length;
-        int startX = getGridCol(currentBlock.getX());
-        int startY = getGridRow(currentBlock.getY());
-
+        int startX = currentBlock.getGridCol(currentBlock.getX());
+        int startY = currentBlock.getGridRow(currentBlock.getY());
+        String color = currentBlock.getColor();
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (shape[row][col] == 1) {
+
                     int gridX = startX + col;
                     int gridY = startY + row;
 
                     if (gridX >= 0 && gridX < WIDTH && gridY >= 0 && gridY < HEIGHT) {
-                        grid[gridY][gridX] = 1;
+                        if(color.equals("blue")){
+                            grid[gridY][gridX] = 1;
+                        } else if (color.equals("cyan")){
+                            grid[gridY][gridX] = 2;
+                        } else if (color.equals("green")){
+                            grid[gridY][gridX] = 3;
+                        } else if (color.equals("orange")){
+                            grid[gridY][gridX] = 4;
+                        } else if(color.equals("purple")){
+                            grid[gridY][gridX] = 5;
+                        } else if (color.equals("red")){
+                            grid[gridY][gridX] = 6;
+                        } else if (color.equals("yellow")){
+                            grid[gridY][gridX] = 7;
+                        }
                     }
                 }
             }
@@ -127,8 +142,8 @@ public class GameLogic implements ActionListener {
         int newX = currentBlock.getX() + dx;
         int newY = currentBlock.getY() + dy;
 
-        int col = getGridCol(newX);
-        int row = getGridRow(newY);
+        int col = currentBlock.getGridCol(newX);
+        int row = currentBlock.getGridRow(newY);
 
         return (col >= 0 && col < WIDTH && row >= 0 && row < HEIGHT && grid[row][col] == 0);
     }
@@ -149,8 +164,8 @@ public class GameLogic implements ActionListener {
         for (int row = 0; row < newMatrix.length; row++) {
             for (int col = 0; col < newMatrix[0].length; col++) {
                 if (newMatrix[row][col] == 1) {
-                    int gridX = getGridCol(newX) + col;
-                    int gridY = getGridRow(newY) + row;
+                    int gridX = currentBlock.getGridCol(newX) + col;
+                    int gridY = currentBlock.getGridRow(newY) + row;
 
                     if (gridX < 0 || gridX >= WIDTH || gridY >= HEIGHT)
                         return false;
@@ -182,18 +197,6 @@ public class GameLogic implements ActionListener {
         for (int j = 0; j < WIDTH; j++)
             grid[0][j] = 0;
         score += 100;
-    }
-
-
-    private int getGridRow(int y){
-        int row =  (y - 20) / 33;
-        return Math.min(row, GameLogic.HEIGHT - 1);
-
-    }
-
-
-    private int getGridCol(int x){
-        return (x - 650) / 33;
     }
 
     public int getTime() { return time; }

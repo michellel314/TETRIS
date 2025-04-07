@@ -10,7 +10,7 @@ public class Block {
     private int x;
     private int y;
     private boolean canRotate;
-
+    private String color;
     public Block(String blockType) {
         this.x = 650;
         this.y = 10;
@@ -21,6 +21,7 @@ public class Block {
                 {1, 1},
                 {1, 1}
             });
+            color = "yellow";
             canRotate = false;
         } else if (blockType.equals("B")) {
             blockSprites = new Image[]{
@@ -47,6 +48,7 @@ public class Block {
                     {1, 0},
                     {1, 0}
             });
+            color = "blue";
             canRotate = true;
         } else if (blockType.equals("C")) {
             blockSprites = new Image[]{
@@ -62,6 +64,7 @@ public class Block {
                     {1},
                     {1}
             });
+            color = "cyan";
             canRotate = true;
         } else if (blockType.equals("D")) {
             blockSprites = new Image[]{
@@ -77,6 +80,7 @@ public class Block {
                     {1, 1},
                     {0, 1}
             });
+            color = "green";
             canRotate = true;
         } else if (blockType.equals("E")) {
             blockSprites = new Image[]{
@@ -92,6 +96,7 @@ public class Block {
                     {1, 1},
                     {1, 0}
             });
+            color = "orange";
             canRotate = true;
         } else if (blockType.equals("F")) {
             blockSprites = new Image[]{
@@ -118,6 +123,7 @@ public class Block {
                     {1, 1},
                     {1, 0}
             });
+            color = "purple";
             canRotate = true;
         } else if (blockType.equals("G")) {
             blockSprites = new Image[]{
@@ -144,6 +150,7 @@ public class Block {
                     {0, 1},
                     {1, 1}
             });
+            color = "red";
             canRotate = true;
 
         }
@@ -156,6 +163,10 @@ public class Block {
         this.x = other.x;
         this.y = other.y;
         this.canRotate = other.canRotate;
+    }
+
+    public String getColor(){
+        return color;
     }
 
     public int getX() { return x; }
@@ -234,14 +245,14 @@ public class Block {
         x += 33;
     }
 
-    private int getGridRow(int y){
+    public int getGridRow(int y){
         int row =  (y - 20) / 33;
-        return Math.min(row, GameLogic.HEIGHT - 1);
-
+        //return Math.min(row, GameLogic.HEIGHT - 1);
+        return row;
     }
 
 
-    private int getGridCol(int x){
+    public int getGridCol(int x){
         return (x - 650) / 33;
     }
 
