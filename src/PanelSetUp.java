@@ -7,10 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class PanelSetUp extends JPanel implements KeyListener, ActionListener{
+public class PanelSetUp extends JPanel implements KeyListener, ActionListener {
     private Timer blockTimer;
-    private Image[] blockImages = new Image[7];
-    private Block block;
     private BufferedImage grid, title;
     private StyledDocument doc;
     private Style style;
@@ -33,7 +31,6 @@ public class PanelSetUp extends JPanel implements KeyListener, ActionListener{
         this.shop = shop;
         setFocusable(true);
         addKeyListener(this);
-        loadBlockImages();
         setupTextPane();
         setupImages();
         gameRunning = true;
@@ -63,19 +60,12 @@ public class PanelSetUp extends JPanel implements KeyListener, ActionListener{
 
     private void setupImages() {
         try {
-            grid = ImageIO.read(new File("Visuals/Outline (1).png"));
-            title = ImageIO.read(new File("Visuals/title  (1).png"));
+            grid = ImageIO.read(getClass().getResource("Visuals/NEW OUTLINE.png"));
+            title = ImageIO.read(getClass().getResource("Visuals/title  (1).png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    private void loadBlockImages() {
-        for (int i = 0; i < blockImages.length; i++) {
-            blockImages[i] = new ImageIcon("Visuals/Block" + i + ".png").getImage();
-        }
-    }
-
 
     public void updateTimer() throws IOException {
         repaint();
@@ -99,9 +89,27 @@ public class PanelSetUp extends JPanel implements KeyListener, ActionListener{
         // Draw placed blocks
         for (int row = 0; row < GameLogic.HEIGHT; row++) {
             for (int col = 0; col < GameLogic.WIDTH; col++) {
-                if (logic.grid[row][col] != 0) {
-                    g.fillRect(col * 25, row * 25, 25, 25);
+                if (logic.grid[row][col] == 1) {
+                    g.setColor(Color.decode(Colors.BLUE));
+                } else if (logic.grid[row][col] == 2){
+                    g.setColor(Color.decode(Colors.CYAN));
+                } else if(logic.grid[row][col] == 3){
+                    g.setColor(Color.decode(Colors.GREEN));
+                } else if(logic.grid[row][col] == 4){
+                    g.setColor(Color.decode(Colors.ORANGE));
+                } else if (logic.grid[row][col] == 5){
+                    g.setColor(Color.decode(Colors.PURPLE));
+                } else if(logic.grid[row][col] == 6){
+                    g.setColor(Color.decode(Colors.RED));
+                    g.fillRect(650 + col * 33, 20 + row * 33, 33, 33);
+                } else if(logic.grid[row][col] == 7){
+                    g.setColor(Color.decode(Colors.YELLOW));
                 }
+
+                if(logic.grid[row][col] != 0){
+                    g.fillRect(650 + col * 33, 20 + row * 33, 33, 33);
+                }
+
             }
         }
 
@@ -139,7 +147,7 @@ public class PanelSetUp extends JPanel implements KeyListener, ActionListener{
                 if (!shop.shovel.getExistsInInv()) {
                     g.drawImage(shop.shovel.getFile(), 1000, 700, null);
                 }
-                if (!shop.gun.getExistsInInv()){
+                if (!shop.gun.getExistsInInv()) {
                     g.drawImage(shop.gun.getFile(), 600, 700, null);
                 }
                 if (!shop.watch.getExistsInInv()) {
@@ -151,8 +159,8 @@ public class PanelSetUp extends JPanel implements KeyListener, ActionListener{
         }
 
         if (gameRunning) {
-            g.drawImage(grid, 200, 20, null);
-            g.drawImage(title, 725, 5, null);
+            g.drawImage(grid, 650, 20, null);
+            g.drawImage(title, 725, 0, null);
         }
     }
 
@@ -162,14 +170,23 @@ public class PanelSetUp extends JPanel implements KeyListener, ActionListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        Block current = logic.getCurrentBlock();
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_UP) current.rotateClockwise();
-        if (key == KeyEvent.VK_DOWN) current.moveDown();
-        if (key == KeyEvent.VK_LEFT) current.moveLeft();
-        if (key == KeyEvent.VK_RIGHT) current.moveRight();
-        repaint();
+        if (gameRunning && !isShopOpen) {
+            Block current = logic.getCurrentBlock();
+            int key = e.getKeyCode();
+
+            if (key == KeyEvent.VK_LEFT && logic.canMove(-33, 0)) {
+                current.moveLeft();
+            } else if (key == KeyEvent.VK_RIGHT && logic.canMove(33, 0)) {
+                current.moveRight();
+            } else if (key == KeyEvent.VK_DOWN) {
+                logic.moveBlockDown(); // move down and place if necessary
+            } else if (key == KeyEvent.VK_UP) {
+                logic.rotateBlock();   // 🔁 use your new method!
+            }
+
+            repaint();
     }
+}
 
     @Override
     public void actionPerformed(ActionEvent e) {

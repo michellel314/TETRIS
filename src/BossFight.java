@@ -22,7 +22,7 @@ public class BossFight implements KeyListener, MouseListener {
     }
 
     public void start(){
-        music = new Music("sounds\\BARNEY.wav");
+        music = new Music("sounds/BARNEY.wav");
         music.setFile();
         music.loop();
     }
@@ -37,7 +37,7 @@ public class BossFight implements KeyListener, MouseListener {
     }
 
     public void makeImage() throws IOException {
-        zaif = ImageIO.read(new File("Visuals/ZAIFBOSSFIGHT.png"));
+        zaif = ImageIO.read(getClass().getResource("Visuals/ZAIFBOSSFIGHT.png"));
     }
 
     @Override

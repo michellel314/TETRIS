@@ -22,18 +22,19 @@ public class Shop implements KeyListener, MouseListener {
 
     public Shop(Player player) {
         try {
-            highheels = new ReyvinsGirlyPopHighHeels(ImageIO.read(new File("Visuals/HighHeels.png")),"Reyvin's Girly-Pop High Heels", 50, false, 50);
-            watch = new ReyvinsPulsingRewindWatch(ImageIO.read(new File("Visuals/Watch.png")), "Reyvin's Pulsing Rewind Watch", 75, false, 1);
-            gun = new ReyvinsQuirkyStunGun(ImageIO.read(new File("Visuals/Gun.png")), "Reyvin's Quirky Stun Gun", 80, false, 5);
-            shovel = new ReyvinsStiffShovel(ImageIO.read(new File("Visuals/Shovel.png")), "Reyvin's Stiff Shovel", 50, false, 1);
+            highheels = new ReyvinsGirlyPopHighHeels(ImageIO.read(getClass().getResource("Visuals/HighHeels.png")),"Reyvin's Girly-Pop High Heels", 50, false, 50);
+            watch = new ReyvinsPulsingRewindWatch(ImageIO.read(getClass().getResource("Visuals/Watch.png")), "Reyvin's Pulsing Rewind Watch", 75, false, 1);
+            gun = new ReyvinsQuirkyStunGun(ImageIO.read(getClass().getResource("Visuals/Gun.png")), "Reyvin's Quirky Stun Gun", 80, false, 5);
+            shovel = new ReyvinsStiffShovel(ImageIO.read(getClass().getResource("Visuals/Shovel.png")), "Reyvin's Stiff Shovel", 50, false, 1);
 
-            shop = ImageIO.read(new File("Visuals/ShopBackground.png"));
-            reyvin = ImageIO.read(new File("Visuals/Reyvin.png"));
+            shop = ImageIO.read(getClass().getResource("Visuals/ShopBackground.png"));
+            reyvin = ImageIO.read(getClass().getResource("Visuals/Reyvin.png"));
             this.player = player;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public BufferedImage getShop() {

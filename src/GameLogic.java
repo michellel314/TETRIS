@@ -10,8 +10,8 @@ public class GameLogic implements ActionListener {
     OutputWindow game;
     Timer timer;
     private int time = 0;
-    public static final int WIDTH = 9;
-    public static final int HEIGHT = 17;
+    public static final int WIDTH = 16;
+    public static final int HEIGHT = 21;
     public int[][] grid = new int[HEIGHT][WIDTH];
     private Block currentBlock;
     private int score;
@@ -70,24 +70,113 @@ public class GameLogic implements ActionListener {
     }
 
     public boolean moveBlockDown() {
-      //  int newY = currentBlock.getY() + 25;
-     //   if (newY >= HEIGHT * 25 || grid[newY / 25][currentBlock.getX() / 25] != 0) {
-      ///      placeBlock();
-     //       return false;
-     //   }
-      currentBlock.moveDown();
-       return true;
+        if (!collides(currentBlock, currentBlock.getX(), currentBlock.getY() + 33)) {
+            currentBlock.moveDown();
+            return true;
+        } else {
+            placeBlock();
+            return false;
+        }
+    }
+
+    public boolean collides(Block block, int newX, int newY) {
+        int[][] shape = block.getShapeMatrix();
+        int cols = shape[0].length;
+        int rows = shape.length;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (shape[row][col] == 1) {
+
+                    int gridX = currentBlock.getGridCol(newX) + col;
+                    int gridY = currentBlock.getGridRow(newY) + row;
+
+                    if (gridY >= HEIGHT) return true;
+                    if (gridY >= 0 && grid[gridY][gridX] != 0) return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void placeBlock() {
-        int row = currentBlock.getY() / 25;
-        int col = currentBlock.getX() / 25;
-        if (row < HEIGHT && col < WIDTH)
-            grid[row][col] = 1;
+        int[][] shape = currentBlock.getShapeMatrix();
+        int cols = shape[0].length;
+        int rows = shape.length;
+        int startX = currentBlock.getGridCol(currentBlock.getX());
+        int startY = currentBlock.getGridRow(currentBlock.getY());
+        String color = currentBlock.getColor();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (shape[row][col] == 1) {
+
+                    int gridX = startX + col;
+                    int gridY = startY + row;
+
+                    if (gridX >= 0 && gridX < WIDTH && gridY >= 0 && gridY < HEIGHT) {
+                        if(color.equals("blue")){
+                            grid[gridY][gridX] = 1;
+                        } else if (color.equals("cyan")){
+                            grid[gridY][gridX] = 2;
+                        } else if (color.equals("green")){
+                            grid[gridY][gridX] = 3;
+                        } else if (color.equals("orange")){
+                            grid[gridY][gridX] = 4;
+                        } else if(color.equals("purple")){
+                            grid[gridY][gridX] = 5;
+                        } else if (color.equals("red")){
+                            grid[gridY][gridX] = 6;
+                        } else if (color.equals("yellow")){
+                            grid[gridY][gridX] = 7;
+                        }
+                    }
+                }
+            }
+        }
 
         clearRows();
         spawnBlock();
     }
+
+    public boolean canMove(int dx, int dy) {
+        int newX = currentBlock.getX() + dx;
+        int newY = currentBlock.getY() + dy;
+
+        int col = currentBlock.getGridCol(newX);
+        int row = currentBlock.getGridRow(newY);
+
+        return (col >= 0 && col < WIDTH && row >= 0 && row < HEIGHT && grid[row][col] == 0);
+    }
+
+    public void rotateBlock() {
+        Block preview = new Block(currentBlock); // copy constructor
+        preview.rotateClockwise();
+
+        if (canRotateTo(preview.getShapeMatrix())) {
+            currentBlock.rotateClockwise();
+        }
+    }
+
+    public boolean canRotateTo(int[][] newMatrix) {
+        int newX = currentBlock.getX();
+        int newY = currentBlock.getY();
+
+        for (int row = 0; row < newMatrix.length; row++) {
+            for (int col = 0; col < newMatrix[0].length; col++) {
+                if (newMatrix[row][col] == 1) {
+                    int gridX = currentBlock.getGridCol(newX) + col;
+                    int gridY = currentBlock.getGridRow(newY) + row;
+
+                    if (gridX < 0 || gridX >= WIDTH || gridY >= HEIGHT)
+                        return false;
+                    if (gridY >= 0 && grid[gridY][gridX] != 0)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     private void clearRows() {
         for (int i = 0; i < HEIGHT; i++) {
